@@ -3,8 +3,6 @@
 #include <malloc.h>
 #include <ctype.h>
 
-#define size(x)  (sizeof(x) / sizeof((x)[0]))
-
 struct Equation {
     // public
     int a, b, c;
