@@ -16,6 +16,7 @@ struct Equation {
 } EquationDefault = {0, 0, 0};
 
 struct EquationResult {
+    // public
     double *solutions;
     enum EquationSolutionStatus solutionStatus;
 } EquationResultDefault = {NULL, NO_SOLUTIONS};
