@@ -3,19 +3,25 @@
 
 #include "equation.h"
 
+bool isZero(const double value) {
+    return fabs(value) < epsilon;
+}
+
 double discriminant(const struct Equation *equation) {
     double a = equation->a, b = equation->b, c = equation->c;
     return b * b - 4 * a * c;
 }
 
 struct EquationSolution solveLinear(const struct Equation *equation) {
-    struct EquationSolution result = EquationSolution();
+    EquationSolution result = EquationSolution();
     double b = equation->b, c = equation->c;
 
-    if (fabs(b) < epsilon && fabs(c) < epsilon) {
-        result.status = INFINITE_SOLUTIONS;
-    } else if (fabs(b) < epsilon) {
-        result.status = NO_SOLUTIONS;
+    if (isZero(b)) {
+        if (isZero(c)) {
+            result.status = INFINITE_SOLUTIONS;
+        } else {
+            result.status = NO_SOLUTIONS;
+        }
     } else {
         result.solution1 = (-c) / (b);
 
@@ -28,9 +34,9 @@ struct EquationSolution solveLinear(const struct Equation *equation) {
 struct EquationSolution solveQuadratic(const struct Equation *equation) {
     double discriminantValue = discriminant(equation);
     double a = equation->a, b = equation->b, c = equation->c;
-    struct EquationSolution result = EquationSolution();
+    EquationSolution result = EquationSolution();
 
-    if (fabs(discriminantValue) < epsilon) { // comparing double with zero
+    if (isZero(discriminantValue)) {
         result.solution1 = (-b) / (2 * a);
 
         result.status = ONE_SOLUTION;
@@ -47,8 +53,7 @@ struct EquationSolution solveQuadratic(const struct Equation *equation) {
 }
 
 struct EquationSolution solve(const struct Equation *equation) {
-    // check if equation is linear
-    if (fabs(equation->a) < epsilon) {
+    if (isZero(equation->a)) {
         return solveLinear(equation);
     }
     return solveQuadratic(equation);
@@ -69,7 +74,7 @@ void printSolutions(const struct EquationSolution *solution) {
             printf("У данного уравнения бесконечное количество решений!");
             break;
         default:
-            printf("Ошибка. Введите другое уравнение!");
+            fprintf(stderr, "Ошибка. Попробуйте ввести уравнение ещё раз");
     }
 }
 
@@ -83,7 +88,7 @@ double readValue(const char type) {
 }
 
 struct Equation readEquation() {
-    struct Equation result = Equation();
+    Equation result = Equation();
 
     printf("Программа решает уравнение вида a * x * x + b * x + c = 0\n");
 
@@ -95,9 +100,9 @@ struct Equation readEquation() {
 }
 
 int main() {
-    struct Equation equation = readEquation();
+    Equation equation = readEquation();
 
-    struct EquationSolution solution = solve(&equation);
+    EquationSolution solution = solve(&equation);
     printSolutions(&solution);
 
     return 0;
