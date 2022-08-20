@@ -39,6 +39,13 @@ typedef struct EquationSolution {
     SolutionStatus status = NO_SOLUTIONS;
 } EquationSolution;
 
+/**
+ * Compares boolean value with zero
+ *
+ * @param value - double value
+ * @return false or true - is value == 0 or not
+ */
+bool isZero(const double value);
 
 /**
  * Counts discriminant:
