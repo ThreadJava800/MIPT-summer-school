@@ -80,9 +80,17 @@ void printSolutions(const struct EquationSolution *solution) {
 
 double readValue(const char type) {
     double val = NAN;
+    int inputCode = 0;
 
     printf("Введите коэффициент %c: ", type);
-    scanf("%lf", &val);
+
+    inputCode = scanf("%lf", &val);
+
+    while(inputCode == 0) {
+        printf("Введите корректное число %c: ", type);
+        scanf("%*s");
+        inputCode = scanf("%lf", &val);
+    }
 
     return val;
 }
