@@ -1,38 +1,23 @@
 #include <stdio.h>
 #include <math.h>
 
-static const double epsilon = 0.00001;
-
-enum SolutionStatus {
-    NO_SOLUTIONS,
-    ONE_SOLUTION,
-    TWO_SOLUTIONS,
-    INFINITE_SOLUTIONS
-};
-
-struct Equation {
-    double a = NAN, b = NAN, c = NAN;
-};
-
-struct EquationSolution {
-    double solution1 = NAN;
-    double solution2 = NAN;
-    SolutionStatus status = NO_SOLUTIONS;
-};
+#include "equation.h"
 
 double discriminant(const struct Equation *equation) {
-    return equation->b * equation->b - 4 * equation->a * equation->c;
+    double a = equation->a, b = equation->b, c = equation->c;
+    return b * b - 4 * a * c;
 }
 
 struct EquationSolution solveLinear(const struct Equation *equation) {
     struct EquationSolution result = EquationSolution();
+    double b = equation->b, c = equation->c;
 
-    if (fabs(equation->b) < epsilon && fabs(equation->c) < epsilon) {
+    if (fabs(b) < epsilon && fabs(c) < epsilon) {
         result.status = INFINITE_SOLUTIONS;
-    } else if (fabs(equation->b) < epsilon) {
+    } else if (fabs(b) < epsilon) {
         result.status = NO_SOLUTIONS;
     } else {
-        result.solution1 = (-equation->c) / (equation->b);
+        result.solution1 = (-c) / (b);
 
         result.status = ONE_SOLUTION;
     }
@@ -42,15 +27,16 @@ struct EquationSolution solveLinear(const struct Equation *equation) {
 
 struct EquationSolution solveQuadratic(const struct Equation *equation) {
     double discriminantValue = discriminant(equation);
+    double a = equation->a, b = equation->b, c = equation->c;
     struct EquationSolution result = EquationSolution();
 
     if (fabs(discriminantValue) < epsilon) { // comparing double with zero
-        result.solution1 = (-equation->b) / (2 * equation->a);
+        result.solution1 = (-b) / (2 * a);
 
         result.status = ONE_SOLUTION;
     } else if (discriminantValue >= 0) {
-        result.solution1 = (-equation->b + sqrt(discriminantValue)) / (2 * equation->a);
-        result.solution2 = (-equation->b - sqrt(discriminantValue)) / (2 * equation->a);
+        result.solution1 = (-b + sqrt(discriminantValue)) / (2 * a);
+        result.solution2 = (-b - sqrt(discriminantValue)) / (2 * a);
 
         result.status = TWO_SOLUTIONS;
     } else {
