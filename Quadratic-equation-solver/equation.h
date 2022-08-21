@@ -1,16 +1,6 @@
 #ifndef EQUATION_HEADER
 #define EQUATION_HEADER
 
-/**
- * Constant used to compare double with zero
- */
-static const double epsilon = 1e-6;
-
-/**
- * Enum of amount of values
- * Can have no solutions, one and two.
- * Also infinite solutions used for equations like 0 * x * x + 0 * x + 0 = 0
- */
 typedef enum {
     NO_SOLUTIONS,
     ONE_SOLUTION,
@@ -21,7 +11,9 @@ typedef enum {
 /**
  * Contains all coefficients needed for equation
  *
- * @param a, b, c - coefficients
+ * @param a - first coefficient of equation
+ * @param b - second coefficient of equation
+ * @param c - thirst coefficient of equation
  */
 typedef struct Equation {
     double a = NAN, b = NAN, c = NAN;
@@ -30,7 +22,8 @@ typedef struct Equation {
 /**
  * Contains all needed data for equation solution
  *
- * @param solution1, solution2 - solutions
+ * @param solution1 - first solution
+ * @param solution2 - second solution
  * @param status - amount of solutions of type @SolutionStatus
  */
 typedef struct EquationSolution {
@@ -40,7 +33,12 @@ typedef struct EquationSolution {
 } EquationSolution;
 
 /**
- * Compares boolean value with zero
+ * Constant used to compare double with zero
+ */
+static const double epsilon = 1e-6;
+
+/**
+ * Checks whether double value equals zero using @epsilon
  *
  * @param value - double value
  * @return false or true - is value == 0 or not
@@ -49,13 +47,13 @@ bool isZero(const double value);
 
 /**
  * Counts discriminant:
- * using formula b * b - 4 * a * c,
+ * using formula b^2 - 4ac,
  * where a, b and c - equation coefficients.
  *
  * @param equation - structure with equation data
  * @return double discriminant value
  */
-double discriminant(const struct Equation *equation);
+double discriminant(const Equation *equation);
 
 /**
  * Solves linear equation.
@@ -64,7 +62,7 @@ double discriminant(const struct Equation *equation);
  * @param equation - structure with equation data
  * @return solution of equation of type @EquationSolution
  */
-struct EquationSolution solveLinear(const struct Equation *equation);
+struct EquationSolution solveLinear(const Equation *equation);
 
 /**
  * Solves quadratic equation.
@@ -74,7 +72,7 @@ struct EquationSolution solveLinear(const struct Equation *equation);
  * @param equation - structure with equation data
  * @return solution of equation of type @EquationSolution
  */
-struct EquationSolution solveQuadratic(const struct Equation *equation);
+struct EquationSolution solveQuadratic(const Equation *equation);
 
 /**
  * Figures out what type of equation is this (quadratic or linear)
@@ -83,14 +81,14 @@ struct EquationSolution solveQuadratic(const struct Equation *equation);
  * @param equation - structure with equation data
  * @return solution of equation of type @EquationSolution.
  */
-struct EquationSolution solve(const struct Equation *equation);
+struct EquationSolution solve(const Equation *equation);
 
 /**
  * Prints solutions of equation considering @SolutionStatus enum
  *
  * @param solution - structure with equation solution
  */
-void printSolutions(const struct EquationSolution *solution);
+void printSolutions(const EquationSolution *solution);
 
 /**
  * Reads values of coefficients

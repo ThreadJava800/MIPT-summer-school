@@ -7,13 +7,13 @@ bool isZero(const double value) {
     return fabs(value) < epsilon;
 }
 
-double discriminant(const struct Equation *equation) {
+double discriminant(const Equation *equation) {
     double a = equation->a, b = equation->b, c = equation->c;
     return b * b - 4 * a * c;
 }
 
-struct EquationSolution solveLinear(const struct Equation *equation) {
-    EquationSolution result = EquationSolution();
+EquationSolution solveLinear(const Equation *equation) {
+    EquationSolution result = {};
     double b = equation->b, c = equation->c;
 
     if (isZero(b)) {
@@ -23,28 +23,28 @@ struct EquationSolution solveLinear(const struct Equation *equation) {
             result.status = NO_SOLUTIONS;
         }
     } else {
-        result.solution1 = (-c) / (b);
-
         result.status = ONE_SOLUTION;
+
+        result.solution1 = -c / b;
     }
 
     return result;
 }
 
-struct EquationSolution solveQuadratic(const struct Equation *equation) {
+EquationSolution solveQuadratic(const Equation *equation) {
     double discriminantValue = discriminant(equation);
-    double a = equation->a, b = equation->b, c = equation->c;
-    EquationSolution result = EquationSolution();
+    double a = equation->a, b = equation->b;
+    EquationSolution result = {};
 
     if (isZero(discriminantValue)) {
-        result.solution1 = (-b) / (2 * a);
-
         result.status = ONE_SOLUTION;
+
+        result.solution1 = (-b) / (2 * a);
     } else if (discriminantValue >= 0) {
+        result.status = TWO_SOLUTIONS;
+
         result.solution1 = (-b + sqrt(discriminantValue)) / (2 * a);
         result.solution2 = (-b - sqrt(discriminantValue)) / (2 * a);
-
-        result.status = TWO_SOLUTIONS;
     } else {
         result.status = NO_SOLUTIONS;
     }
@@ -52,29 +52,29 @@ struct EquationSolution solveQuadratic(const struct Equation *equation) {
     return result;
 }
 
-struct EquationSolution solve(const struct Equation *equation) {
+EquationSolution solve(const Equation *equation) {
     if (isZero(equation->a)) {
         return solveLinear(equation);
     }
     return solveQuadratic(equation);
 }
 
-void printSolutions(const struct EquationSolution *solution) {
+void printSolutions(const EquationSolution *solution) {
     switch (solution->status) {
         case NO_SOLUTIONS:
             printf("У данного уравнения нет решений!");
             break;
         case ONE_SOLUTION:
-            printf("Данное уравнение имеет лишь одно решение: %f\n", solution->solution1);
+            printf("Данное уравнение имеет лишь одно решение: %lf\n", solution->solution1);
             break;
         case TWO_SOLUTIONS:
-            printf("Данное уравнение имеет два решения: %f и %f\n", solution->solution1, solution->solution2);
+            printf("Данное уравнение имеет два решения: %lf и %lf\n", solution->solution1, solution->solution2);
             break;
         case INFINITE_SOLUTIONS:
             printf("У данного уравнения бесконечное количество решений!");
             break;
         default:
-            fprintf(stderr, "Ошибка. Попробуйте ввести уравнение ещё раз");
+            fprintf(stderr, "Ошибка. Но не с вашей стороны :) Свяжитесь с разработчиком (неверный .");
     }
 }
 
@@ -86,7 +86,7 @@ double readValue(const char type) {
 
     inputCode = scanf("%lf", &val);
 
-    while(inputCode == 0) {
+    while (inputCode == 0) {
         printf("Введите корректное число %c: ", type);
         scanf("%*s");
         inputCode = scanf("%lf", &val);
@@ -95,10 +95,10 @@ double readValue(const char type) {
     return val;
 }
 
-struct Equation readEquation() {
-    Equation result = Equation();
+Equation readEquation() {
+    Equation result = {};
 
-    printf("Программа решает уравнение вида a * x * x + b * x + c = 0\n");
+    printf("Программа решает уравнение вида ax^2 + bx + c = 0\n");
 
     result.a = readValue('a');
     result.b = readValue('b');
