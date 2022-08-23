@@ -1,3 +1,3 @@
-D:/Projects/MIPT-summer-school/cmake-build-debug/CMakeFiles/MIPT_summer_school.dir
-D:/Projects/MIPT-summer-school/cmake-build-debug/CMakeFiles/edit_cache.dir
-D:/Projects/MIPT-summer-school/cmake-build-debug/CMakeFiles/rebuild_cache.dir
+/home/vladimir/Projects/MIPT summer school/cmake-build-debug/CMakeFiles/MIPT_summer_school.dir
+/home/vladimir/Projects/MIPT summer school/cmake-build-debug/CMakeFiles/edit_cache.dir
+/home/vladimir/Projects/MIPT summer school/cmake-build-debug/CMakeFiles/rebuild_cache.dir

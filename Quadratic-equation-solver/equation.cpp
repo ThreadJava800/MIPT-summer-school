@@ -1,20 +1,31 @@
 #include <stdio.h>
 #include <math.h>
+#include <cassert>
 
 #include "equation.h"
 
 bool isZero(const double value) {
+    assert(isfinite(value));
+
     return fabs(value) < epsilon;
 }
 
 double discriminant(const Equation *equation) {
     double a = equation->a, b = equation->b, c = equation->c;
+
+    assert(isfinite(a));
+    assert(isfinite(b));
+    assert(isfinite(c));
+
     return b * b - 4 * a * c;
 }
 
 EquationSolution solveLinear(const Equation *equation) {
     EquationSolution result = {};
     double b = equation->b, c = equation->c;
+
+    assert(isfinite(b));
+    assert(isfinite(c));
 
     if (isZero(b)) {
         if (isZero(c)) {
@@ -36,6 +47,9 @@ EquationSolution solveQuadratic(const Equation *equation) {
     double a = equation->a, b = equation->b;
     EquationSolution result = {};
 
+    assert(isfinite(a));
+    assert(isfinite(b));
+
     if (isZero(discriminantValue)) {
         result.status = ONE_SOLUTION;
 
@@ -53,6 +67,8 @@ EquationSolution solveQuadratic(const Equation *equation) {
 }
 
 EquationSolution solve(const Equation *equation) {
+    assert(isfinite(equation->a));
+
     if (isZero(equation->a)) {
         return solveLinear(equation);
     }
@@ -60,6 +76,8 @@ EquationSolution solve(const Equation *equation) {
 }
 
 void printSolutions(const EquationSolution *solution) {
+    assert(solution != nullptr);
+
     switch (solution->status) {
         case NO_SOLUTIONS:
             printf("У данного уравнения нет решений!");
@@ -82,11 +100,13 @@ double readValue(const char type) {
     double val = NAN;
     int inputCode = 0;
 
+    assert(type == 'a' || type == 'b' || type == 'c');
+
     printf("Введите коэффициент %c: ", type);
 
     inputCode = scanf("%lf", &val);
 
-    while (inputCode == 0) {
+    while (inputCode == 0 || inputCode == EOF) {
         printf("Введите корректное число %c: ", type);
         scanf("%*s");
         inputCode = scanf("%lf", &val);
