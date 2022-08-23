@@ -5,12 +5,12 @@
 #include "equation.h"
 
 bool isZero(const double value) {
-    assert(isfinite(value));
-
     return fabs(value) < epsilon;
 }
 
 double discriminant(const Equation *equation) {
+    assert(equation != nullptr);
+
     double a = equation->a, b = equation->b, c = equation->c;
 
     assert(isfinite(a));
@@ -20,8 +20,10 @@ double discriminant(const Equation *equation) {
     return b * b - 4 * a * c;
 }
 
-EquationSolution solveLinear(const Equation *equation) {
-    EquationSolution result = {};
+void solveLinear(const Equation *equation, EquationSolution *result) {
+    assert(equation != nullptr);
+    assert(result != nullptr);
+
     double b = equation->b, c = equation->c;
 
     assert(isfinite(b));
@@ -29,50 +31,47 @@ EquationSolution solveLinear(const Equation *equation) {
 
     if (isZero(b)) {
         if (isZero(c)) {
-            result.status = INFINITE_SOLUTIONS;
+            result->status = INFINITE_SOLUTIONS;
         } else {
-            result.status = NO_SOLUTIONS;
+            result->status = NO_SOLUTIONS;
         }
     } else {
-        result.status = ONE_SOLUTION;
+        result->status = ONE_SOLUTION;
 
-        result.solution1 = -c / b;
+        result->solution1 = -c / b;
     }
-
-    return result;
 }
 
-EquationSolution solveQuadratic(const Equation *equation) {
+void solveQuadratic(const Equation *equation, EquationSolution *result) {
+    assert(equation != nullptr);
+    assert(result != nullptr);
+
     double discriminantValue = discriminant(equation);
     double a = equation->a, b = equation->b;
-    EquationSolution result = {};
-
-    assert(isfinite(a));
-    assert(isfinite(b));
 
     if (isZero(discriminantValue)) {
-        result.status = ONE_SOLUTION;
+        result->status = ONE_SOLUTION;
 
-        result.solution1 = (-b) / (2 * a);
-    } else if (discriminantValue >= 0) {
-        result.status = TWO_SOLUTIONS;
+        result->solution1 = (-b) / (2 * a);
+    } else if (discriminantValue > 0) {
+        result->status = TWO_SOLUTIONS;
 
-        result.solution1 = (-b + sqrt(discriminantValue)) / (2 * a);
-        result.solution2 = (-b - sqrt(discriminantValue)) / (2 * a);
+        result->solution1 = (-b + sqrt(discriminantValue)) / (2 * a);
+        result->solution2 = (-b - sqrt(discriminantValue)) / (2 * a);
     } else {
-        result.status = NO_SOLUTIONS;
+        result->status = NO_SOLUTIONS;
     }
-
-    return result;
 }
 
-EquationSolution solve(const Equation *equation) {
-    assert(isfinite(equation->a));
+void solve(const Equation *equation, EquationSolution *result) {
+    assert(equation != nullptr);
+    assert(result != nullptr);
 
     if (isZero(equation->a)) {
-        return solveLinear(equation);
+        solveLinear(equation, result);
+    } else {
+        solveQuadratic(equation, result);
     }
-    return solveQuadratic(equation);
 }
 
 void printSolutions(const EquationSolution *solution) {
@@ -92,46 +91,82 @@ void printSolutions(const EquationSolution *solution) {
             printf("У данного уравнения бесконечное количество решений!");
             break;
         default:
-            fprintf(stderr, "Ошибка. Но не с вашей стороны :) Свяжитесь с разработчиком (неверный .");
+            fprintf(stderr, "Ошибка. Но не с вашей стороны :) Свяжитесь с разработчиком (неверный)\n");
     }
 }
 
-double readValue(const char type) {
-    double val = NAN;
-    int inputCode = 0;
-
+int readValue(const char type, double *inputValue) {
+    assert(inputValue != nullptr);
     assert(type == 'a' || type == 'b' || type == 'c');
+
+    int inputCode = 0, inputCount = 0;
 
     printf("Введите коэффициент %c: ", type);
 
-    inputCode = scanf("%lf", &val);
+    inputCode = scanf("%lf", inputValue);
 
-    while (inputCode == 0 || inputCode == EOF) {
+    while (inputCode != 1) {
+        if (inputCode == EOF) {
+            return EOF_IN_INPUT;
+        }
+
+        if (inputCount == 5) {
+            return UNSUCCESSFUL_INPUT;
+        }
+
+        inputCount += 1;
         printf("Введите корректное число %c: ", type);
         scanf("%*s");
-        inputCode = scanf("%lf", &val);
+        inputCode = scanf("%lf", inputValue);
     }
 
-    return val;
+    return SUCCESS;
 }
 
-Equation readEquation() {
-    Equation result = {};
+int readEquation(Equation *equation) {
+    assert(equation != nullptr);
+
+    int errorCode = 0;
 
     printf("Программа решает уравнение вида ax^2 + bx + c = 0\n");
 
-    result.a = readValue('a');
-    result.b = readValue('b');
-    result.c = readValue('c');
+    errorCode = readValue('a', &equation->a);
+    if (errorCode != SUCCESS) {
+        return errorCode;
+    }
 
-    return result;
+    errorCode = readValue('b', &equation->b);
+    if (errorCode != SUCCESS) {
+        return errorCode;
+    }
+
+    errorCode = readValue('c', &equation->c);
+    if (errorCode != SUCCESS) {
+        return errorCode;
+    }
+
+    return SUCCESS;
 }
 
-int main() {
-    Equation equation = readEquation();
-
-    EquationSolution solution = solve(&equation);
-    printSolutions(&solution);
-
-    return 0;
-}
+//int main() {
+//    Equation equation = {};
+//    int errorCode = readEquation(&equation);
+//    switch (errorCode) {
+//        case 0:
+//            break;
+//        case 1:
+//            fprintf(stderr, "Превышено количество попыток ввода (5).");
+//            exit(1);
+//        case 2:
+//            fprintf(stderr, "EOF в конце ввода!");
+//            exit(1);
+//        default:
+//            fprintf(stderr, "");
+//    }
+//
+//    EquationSolution solution = {};
+//    solve(&equation, &solution);
+//    printSolutions(&solution);
+//
+//    return 0;
+//}

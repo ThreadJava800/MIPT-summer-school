@@ -1,12 +1,18 @@
 #ifndef EQUATION_HEADER
 #define EQUATION_HEADER
 
-typedef enum {
-    NO_SOLUTIONS,
-    ONE_SOLUTION,
-    TWO_SOLUTIONS,
-    INFINITE_SOLUTIONS
-} SolutionStatus;
+enum ErrorCode {
+    SUCCESS = 0,
+    UNSUCCESSFUL_INPUT = 1,
+    EOF_IN_INPUT = 2,
+};
+
+enum SolutionStatus {
+    INFINITE_SOLUTIONS = -1,
+    NO_SOLUTIONS = 0,
+    ONE_SOLUTION = 1,
+    TWO_SOLUTIONS = 2,
+};
 
 /**
  * Contains all coefficients needed for equation
@@ -35,7 +41,7 @@ typedef struct EquationSolution {
 /**
  * Constant used to compare double with zero
  */
-static const double epsilon = 1e-6;
+const double epsilon = 1e-12;
 
 /**
  * Checks whether double value equals zero using @epsilon
@@ -62,7 +68,7 @@ double discriminant(const Equation *equation);
  * @param equation - structure with equation data
  * @return solution of equation of type @EquationSolution
  */
-struct EquationSolution solveLinear(const Equation *equation);
+void solveLinear(const Equation *equation, EquationSolution *result);
 
 /**
  * Solves quadratic equation.
@@ -72,7 +78,7 @@ struct EquationSolution solveLinear(const Equation *equation);
  * @param equation - structure with equation data
  * @return solution of equation of type @EquationSolution
  */
-struct EquationSolution solveQuadratic(const Equation *equation);
+void solveQuadratic(const Equation *equation, EquationSolution *result);
 
 /**
  * Figures out what type of equation is this (quadratic or linear)
@@ -81,7 +87,7 @@ struct EquationSolution solveQuadratic(const Equation *equation);
  * @param equation - structure with equation data
  * @return solution of equation of type @EquationSolution.
  */
-struct EquationSolution solve(const Equation *equation);
+void solve(const Equation *equation, EquationSolution *result);
 
 /**
  * Prints solutions of equation considering @SolutionStatus enum
@@ -96,14 +102,14 @@ void printSolutions(const EquationSolution *solution);
  * @param type - coefficient to be entered
  * @return double read value
  */
-double readValue(char type);
+int readValue(const char type, double *inputValue);
 
 /**
  * Creates @Equation instance with coefficients read in @printSolutions
  *
  * @return structure with equation
  */
-struct Equation readEquation();
+int readEquation(Equation *equation);
 
 /**
  * Main controller of program.
