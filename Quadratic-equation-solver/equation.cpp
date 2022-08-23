@@ -79,19 +79,19 @@ void printSolutions(const EquationSolution *solution) {
 
     switch (solution->status) {
         case NO_SOLUTIONS:
-            printf("У данного уравнения нет решений!");
+            printf("This equation doesn't have any solutions!");
             break;
         case ONE_SOLUTION:
-            printf("Данное уравнение имеет лишь одно решение: %lf\n", solution->solution1);
+            printf("This equation has one solution: %lf\n", solution->solution1);
             break;
         case TWO_SOLUTIONS:
-            printf("Данное уравнение имеет два решения: %lf и %lf\n", solution->solution1, solution->solution2);
+            printf("This equation has two solutions: %lf и %lf\n", solution->solution1, solution->solution2);
             break;
         case INFINITE_SOLUTIONS:
-            printf("У данного уравнения бесконечное количество решений!");
+            printf("This equation has infinite solutions!");
             break;
         default:
-            fprintf(stderr, "Ошибка. Но не с вашей стороны :) Свяжитесь с разработчиком (неверный)\n");
+            fprintf(stderr, "Error. But it's not yours :) Please contact developer (incorrect SolutionStatus)\n");
     }
 }
 
@@ -101,7 +101,7 @@ int readValue(const char type, double *inputValue) {
 
     int inputCode = 0, inputCount = 0;
 
-    printf("Введите коэффициент %c: ", type);
+    printf("Enter coefficient %c: ", type);
 
     inputCode = scanf("%lf", inputValue);
 
@@ -115,7 +115,7 @@ int readValue(const char type, double *inputValue) {
         }
 
         inputCount += 1;
-        printf("Введите корректное число %c: ", type);
+        printf("Please provide correct coefficient %c: ", type);
         scanf("%*s");
         inputCode = scanf("%lf", inputValue);
     }
@@ -128,7 +128,7 @@ int readEquation(Equation *equation) {
 
     int errorCode = 0;
 
-    printf("Программа решает уравнение вида ax^2 + bx + c = 0\n");
+    printf("Program solves equations like ax^2 + bx + c = 0\n");
 
     errorCode = readValue('a', &equation->a);
     if (errorCode != SUCCESS) {
@@ -148,25 +148,25 @@ int readEquation(Equation *equation) {
     return SUCCESS;
 }
 
-//int main() {
-//    Equation equation = {};
-//    int errorCode = readEquation(&equation);
-//    switch (errorCode) {
-//        case 0:
-//            break;
-//        case 1:
-//            fprintf(stderr, "Превышено количество попыток ввода (5).");
-//            exit(1);
-//        case 2:
-//            fprintf(stderr, "EOF в конце ввода!");
-//            exit(1);
-//        default:
-//            fprintf(stderr, "");
-//    }
-//
-//    EquationSolution solution = {};
-//    solve(&equation, &solution);
-//    printSolutions(&solution);
-//
-//    return 0;
-//}
+int main() {
+    Equation equation = {};
+    int errorCode = readEquation(&equation);
+    switch (errorCode) {
+        case 0:
+            break;
+        case 1:
+            fprintf(stderr, "Too many input attempts (5).");
+            return EXIT_FAILURE;
+        case 2:
+            fprintf(stderr, "EOF in the end of input!");
+            return EXIT_FAILURE;
+        default:
+            fprintf(stderr, "");
+    }
+
+    EquationSolution solution = {};
+    solve(&equation, &solution);
+    printSolutions(&solution);
+
+    return 0;
+}

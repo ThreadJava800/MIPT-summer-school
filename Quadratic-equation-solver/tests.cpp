@@ -11,7 +11,7 @@ struct TestEquation {
 };
 
 bool compareDoubles(const double *val1, const double *val2) {
-    return isZero(*val1 - *val2) || (*val1 == *val2 == NAN);
+    return isZero(*val1 - *val2);
 }
 
 bool compare(EquationSolution *humanSolution, EquationSolution *machineSolution) {

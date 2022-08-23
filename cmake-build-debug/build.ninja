@@ -55,12 +55,6 @@ build CMakeFiles/MIPT_summer_school.dir/Quadratic-equation-solver/equation.cpp.o
   OBJECT_DIR = CMakeFiles/MIPT_summer_school.dir
   OBJECT_FILE_DIR = CMakeFiles/MIPT_summer_school.dir/Quadratic-equation-solver
 
-build CMakeFiles/MIPT_summer_school.dir/Quadratic-equation-solver/tests.cpp.o: CXX_COMPILER__MIPT_summer_school_Debug /home/vladimir/Projects/MIPT$ summer$ school/Quadratic-equation-solver/tests.cpp || cmake_object_order_depends_target_MIPT_summer_school
-  DEP_FILE = CMakeFiles/MIPT_summer_school.dir/Quadratic-equation-solver/tests.cpp.o.d
-  FLAGS = -g -std=gnu++17
-  OBJECT_DIR = CMakeFiles/MIPT_summer_school.dir
-  OBJECT_FILE_DIR = CMakeFiles/MIPT_summer_school.dir/Quadratic-equation-solver
-
 
 # =============================================================================
 # Link build statements for EXECUTABLE target MIPT_summer_school
@@ -69,7 +63,7 @@ build CMakeFiles/MIPT_summer_school.dir/Quadratic-equation-solver/tests.cpp.o: C
 #############################################
 # Link the executable MIPT_summer_school
 
-build MIPT_summer_school: CXX_EXECUTABLE_LINKER__MIPT_summer_school_Debug CMakeFiles/MIPT_summer_school.dir/Quadratic-equation-solver/equation.cpp.o CMakeFiles/MIPT_summer_school.dir/Quadratic-equation-solver/tests.cpp.o
+build MIPT_summer_school: CXX_EXECUTABLE_LINKER__MIPT_summer_school_Debug CMakeFiles/MIPT_summer_school.dir/Quadratic-equation-solver/equation.cpp.o
   FLAGS = -g
   LINK_FLAGS = -rdynamic
   LINK_LIBRARIES = -lm

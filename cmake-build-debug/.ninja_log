@@ -1,17 +1,8 @@
 # ninja log v5
-166	236	1661268392223850895	MIPT_summer_school	bbf831118af7ceda
-0	161	1661266622063928271	CMakeFiles/MIPT_summer_school.dir/Quadratic-equation-solver/equation.cpp.o	3aff317445c7f1eb
-0	34	1661262283140784507	build.ninja	377572d5dec09499
-0	166	1661268392153850898	CMakeFiles/MIPT_summer_school.dir/Quadratic-equation-solver/tests.cpp.o	6e3dec4e8afba575
-0	159	1661268503563846034	CMakeFiles/MIPT_summer_school.dir/Quadratic-equation-solver/tests.cpp.o	6e3dec4e8afba575
-160	232	1661268503633846031	MIPT_summer_school	bbf831118af7ceda
-1	162	1661268531783844805	CMakeFiles/MIPT_summer_school.dir/Quadratic-equation-solver/tests.cpp.o	6e3dec4e8afba575
-162	233	1661268531853844802	MIPT_summer_school	bbf831118af7ceda
-1	160	1661268539877177787	CMakeFiles/MIPT_summer_school.dir/Quadratic-equation-solver/tests.cpp.o	6e3dec4e8afba575
-160	231	1661268539947177784	MIPT_summer_school	bbf831118af7ceda
-1	164	1661268721410503201	CMakeFiles/MIPT_summer_school.dir/Quadratic-equation-solver/tests.cpp.o	6e3dec4e8afba575
-164	237	1661268721483836532	MIPT_summer_school	bbf831118af7ceda
-1	165	1661268734983835944	CMakeFiles/MIPT_summer_school.dir/Quadratic-equation-solver/tests.cpp.o	6e3dec4e8afba575
-165	241	1661268735057169274	MIPT_summer_school	bbf831118af7ceda
-0	166	1661268841417164638	CMakeFiles/MIPT_summer_school.dir/Quadratic-equation-solver/tests.cpp.o	6e3dec4e8afba575
-166	237	1661268841487164634	MIPT_summer_school	bbf831118af7ceda
+162	242	1661269939217116681	MIPT_summer_school	bbf831118af7ceda
+1	168	1661270224827104230	CMakeFiles/MIPT_summer_school.dir/Quadratic-equation-solver/equation.cpp.o	3aff317445c7f1eb
+0	34	1661270243327103424	build.ninja	377572d5dec09499
+0	162	1661269939137116685	CMakeFiles/MIPT_summer_school.dir/Quadratic-equation-solver/tests.cpp.o	6e3dec4e8afba575
+0	68	1661270245640436658	MIPT_summer_school	400f0192c815a545
+0	173	1661270264763769157	CMakeFiles/MIPT_summer_school.dir/Quadratic-equation-solver/equation.cpp.o	3aff317445c7f1eb
+173	248	1661270264837102487	MIPT_summer_school	400f0192c815a545
