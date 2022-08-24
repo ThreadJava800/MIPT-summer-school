@@ -1,6 +1,6 @@
 #include <stdio.h>
 #include <math.h>
-#include <cassert>
+#include <assert.h>
 
 #include "equation.h"
 
@@ -99,11 +99,11 @@ int readValue(const char type, double *inputValue) {
     assert(inputValue != nullptr);
     assert(type == 'a' || type == 'b' || type == 'c');
 
-    int inputCode = 0, inputCount = 0;
+    int inputCount = 0;
 
     printf("Enter coefficient %c: ", type);
 
-    inputCode = scanf("%lf", inputValue);
+    int inputCode = scanf("%lf", inputValue);
 
     while (inputCode != 1) {
         if (inputCode == EOF) {
@@ -130,19 +130,15 @@ int readEquation(Equation *equation) {
 
     printf("Program solves equations like ax^2 + bx + c = 0\n");
 
-    errorCode = readValue('a', &equation->a);
-    if (errorCode != SUCCESS) {
-        return errorCode;
-    }
+    CharCoefficient coefficients[3] = {{.letter = 'a', .coefficient = &equation->a},
+                                       {.letter = 'b', .coefficient = &equation->b},
+                                       {.letter = 'c', .coefficient = &equation->c}};
 
-    errorCode = readValue('b', &equation->b);
-    if (errorCode != SUCCESS) {
-        return errorCode;
-    }
-
-    errorCode = readValue('c', &equation->c);
-    if (errorCode != SUCCESS) {
-        return errorCode;
+    for (int i = 0; i < 3; i++) {
+        errorCode = readValue(coefficients[i].letter, coefficients[i].coefficient);
+        if (errorCode != SUCCESS) {
+            return errorCode;
+        }
     }
 
     return SUCCESS;
@@ -151,6 +147,7 @@ int readEquation(Equation *equation) {
 int main() {
     Equation equation = {};
     int errorCode = readEquation(&equation);
+
     switch (errorCode) {
         case 0:
             break;

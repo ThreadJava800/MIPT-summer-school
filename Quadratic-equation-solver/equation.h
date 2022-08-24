@@ -2,16 +2,16 @@
 #define EQUATION_HEADER
 
 enum ErrorCode {
-    SUCCESS = 0,
-    UNSUCCESSFUL_INPUT = 1,
-    EOF_IN_INPUT = 2,
+    SUCCESS             = 0,
+    UNSUCCESSFUL_INPUT  = 1,
+    EOF_IN_INPUT        = 2,
 };
 
 enum SolutionStatus {
     INFINITE_SOLUTIONS = -1,
-    NO_SOLUTIONS = 0,
-    ONE_SOLUTION = 1,
-    TWO_SOLUTIONS = 2,
+    NO_SOLUTIONS       =  0,
+    ONE_SOLUTION       =  1,
+    TWO_SOLUTIONS      =  2,
 };
 
 /**
@@ -21,9 +21,20 @@ enum SolutionStatus {
  * @param b - second coefficient of equation
  * @param c - thirst coefficient of equation
  */
-typedef struct Equation {
+struct Equation {
     double a = NAN, b = NAN, c = NAN;
-} Equation;
+};
+
+/**
+ * Contains pointers to coefficients and their char representation
+ *
+ * @param letter - char representation
+ * @param coefficient - pointer to coefficient
+ */
+struct CharCoefficient {
+    char letter         = 0;
+    double *coefficient = nullptr;
+};
 
 /**
  * Contains all needed data for equation solution
@@ -32,11 +43,11 @@ typedef struct Equation {
  * @param solution2 - second solution
  * @param status - amount of solutions of type @SolutionStatus
  */
-typedef struct EquationSolution {
-    double solution1 = NAN;
-    double solution2 = NAN;
+struct EquationSolution {
+    double solution1      = NAN;
+    double solution2      = NAN;
     SolutionStatus status = NO_SOLUTIONS;
-} EquationSolution;
+};
 
 /**
  * Constant used to compare double with zero
@@ -107,14 +118,14 @@ int readValue(const char type, double *inputValue);
 /**
  * Creates @Equation instance with coefficients read in @printSolutions
  *
- * @return structure with equation
+ * @return integer error code (@ErrorCode)
  */
 int readEquation(Equation *equation);
 
 /**
  * Main controller of program.
  *
- * @return integer value - result code of program
+ * @return integer value - result code of program (@ErrorCode)
  */
 int main();
 
