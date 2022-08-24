@@ -52,7 +52,7 @@ void solveQuadratic(const Equation *equation, EquationSolution *result) {
     if (isZero(discriminantValue)) {
         result->status = ONE_SOLUTION;
 
-        result->solution1 = (-b) / (2 * a);
+        result->solution1 = -b / (2 * a);
     } else if (discriminantValue > 0) {
         result->status = TWO_SOLUTIONS;
 
