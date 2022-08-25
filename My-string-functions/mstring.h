@@ -13,6 +13,8 @@
  */
 int mPuts(const char *string);
 
+char *mStrchr(const char *cs, int c);
+
 /**
  * Returns length of char*
  *
@@ -20,5 +22,7 @@ int mPuts(const char *string);
  * @return length of string
  */
 int mStrlen(const char *cs);
+
+char *mStrcpy(char *s, const char *cs);
 
 #endif //MIPT_SUMMER_SCHOOL_MSTRING_H
