@@ -4,6 +4,8 @@
 
 #include <stdio.h>
 #include <stdlib.h>
+#include <math.h>
+#include "assert.h"
 
 #include "mstring.h"
 
@@ -46,6 +48,8 @@ char *mStrcpy(char *s, const char *cs) {
 }
 
 char *mStrncpy(char *s, const char *cs, size_t n) {
+    assert(isfinite(n));
+
     size_t csLen = mStrlen(cs);
 
     if (csLen < n) {
@@ -55,14 +59,19 @@ char *mStrncpy(char *s, const char *cs, size_t n) {
             s[i] = '\0';
             s++;
         }
-
-        //printf("%s\n", s);
     }
     else {
-        for (int i = 0; i <= n; i++) {
-            s[i] = cs[i];
+        char newString[MAX_STRING] = "";
+        for (int i = 0; i < n; i++) {
+            newString[i] = cs[i];
         }
+        mStrcpy(s, newString);
     }
 
     return s;
+}
+
+
+char *mStrcat(char *s, const char *cs) {
+
 }

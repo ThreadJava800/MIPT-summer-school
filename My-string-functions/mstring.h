@@ -5,6 +5,8 @@
 #ifndef MIPT_SUMMER_SCHOOL_MSTRING_H
 #define MIPT_SUMMER_SCHOOL_MSTRING_H
 
+const int MAX_STRING = 4096;
+
 /**
  * Prints string
  *
@@ -26,5 +28,7 @@ int mStrlen(const char *cs);
 char *mStrcpy(char *s, const char *cs);
 
 char *mStrncpy(char *s, const char *cs, size_t n);
+
+char *mStrcat(char *s, const char *cs);
 
 #endif //MIPT_SUMMER_SCHOOL_MSTRING_H

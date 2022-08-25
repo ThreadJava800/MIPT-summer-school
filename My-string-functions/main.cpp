@@ -7,8 +7,8 @@
 #include "mstring.h"
 
 int main() {
-    char *s;
-    char *code = mStrncpy(s, "hello", 9);
+    char s[100] = "testtq";
+    char *code = mStrncpy(s, "hello", 10);
 
     return 0;
 }
