@@ -81,3 +81,23 @@ char *mStrcat(char *s, const char *cs) {
 
     return s;
 }
+
+char *mStrncat(char *s, const char *cs, int n) {
+    int sLen = mStrlen(s), csLen = mStrlen(cs);
+
+    if (sLen < n) {
+        mStrcat(s, cs);
+    } else {
+        char newString[MAX_STRING] = "";
+
+        for (int i = 0; i < n; i++) {
+            newString[i] = cs[i];
+        }
+
+        mStrcat(s, newString);
+    }
+
+    mStrcat(s, "\0");
+
+    return s;
+}

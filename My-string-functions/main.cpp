@@ -8,7 +8,7 @@
 
 int main() {
     char s[MAX_STRING] = "petya ";
-    char *code = mStrcat(s, "haha");
+    char *code = mStrncat(s, "haha", 0);
     printf(s);
 
     return 0;

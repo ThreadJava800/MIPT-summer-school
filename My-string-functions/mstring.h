@@ -31,4 +31,6 @@ char *mStrncpy(char *s, const char *cs, size_t n);
 
 char *mStrcat(char *s, const char *cs);
 
+char *mStrncat(char *s, const char *cs, int n);
+
 #endif //MIPT_SUMMER_SCHOOL_MSTRING_H
