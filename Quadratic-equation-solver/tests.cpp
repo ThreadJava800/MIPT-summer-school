@@ -2,7 +2,7 @@
 #include <cstdio>
 #include "equation.h"
 
-#define RED_COLOR "\x1b[31m"
+#define RED_COLOR   "\x1b[31m"
 #define GREEN_COLOR "\x1b[32m"
 
 struct TestEquation {
@@ -19,6 +19,7 @@ bool compare(EquationSolution *humanSolution, EquationSolution *machineSolution)
             (machineSolution->status == humanSolution->status && humanSolution->status == INFINITE_SOLUTIONS)) {
         return true;
     }
+
     return ((compareDoubles(&machineSolution->solution1, &humanSolution->solution1) &&
              compareDoubles(&machineSolution->solution1, &humanSolution->solution1)) ||
             (compareDoubles(&machineSolution->solution1, &humanSolution->solution2) &&

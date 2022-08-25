@@ -52,7 +52,7 @@ struct EquationSolution {
 /**
  * Constant used to compare double with zero
  */
-const double epsilon = 1e-12;
+const double EPSILON = 1e-12;
 
 /**
  * Checks whether double value equals zero using @epsilon
@@ -121,6 +121,12 @@ int readValue(const char type, double *inputValue);
  * @return integer error code (@ErrorCode)
  */
 int readEquation(Equation *equation);
+
+/**
+ * Check error code (@ErrorCode) of program
+ * @param errorCode
+ */
+void checkErrorCode(int errorCode);
 
 /**
  * Main controller of program.

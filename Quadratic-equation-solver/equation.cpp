@@ -5,7 +5,7 @@
 #include "equation.h"
 
 bool isZero(const double value) {
-    return fabs(value) < epsilon;
+    return fabs(value) < EPSILON;
 }
 
 double discriminant(const Equation *equation) {
@@ -44,7 +44,7 @@ void solveLinear(const Equation *equation, EquationSolution *result) {
 
 void solveQuadratic(const Equation *equation, EquationSolution *result) {
     assert(equation != nullptr);
-    assert(result != nullptr);
+    assert(result   != nullptr);
 
     double discriminantValue = discriminant(equation);
     double a = equation->a, b = equation->b;
@@ -65,7 +65,7 @@ void solveQuadratic(const Equation *equation, EquationSolution *result) {
 
 void solve(const Equation *equation, EquationSolution *result) {
     assert(equation != nullptr);
-    assert(result != nullptr);
+    assert(result   != nullptr);
 
     if (isZero(equation->a)) {
         solveLinear(equation, result);
@@ -81,15 +81,19 @@ void printSolutions(const EquationSolution *solution) {
         case NO_SOLUTIONS:
             printf("This equation doesn't have any solutions!");
             break;
+
         case ONE_SOLUTION:
             printf("This equation has one solution: %lf\n", solution->solution1);
             break;
+
         case TWO_SOLUTIONS:
             printf("This equation has two solutions: %lf и %lf\n", solution->solution1, solution->solution2);
             break;
+
         case INFINITE_SOLUTIONS:
             printf("This equation has infinite solutions!");
             break;
+
         default:
             fprintf(stderr, "Error. But it's not yours :) Please contact developer (incorrect SolutionStatus)\n");
     }
@@ -130,9 +134,9 @@ int readEquation(Equation *equation) {
 
     printf("Program solves equations like ax^2 + bx + c = 0\n");
 
-    CharCoefficient coefficients[3] = {{.letter = 'a', .coefficient = &equation->a},
-                                       {.letter = 'b', .coefficient = &equation->b},
-                                       {.letter = 'c', .coefficient = &equation->c}};
+    CharCoefficient coefficients[3] = {{ .letter = 'a', .coefficient = &equation->a },
+                                       { .letter = 'b', .coefficient = &equation->b },
+                                       { .letter = 'c', .coefficient = &equation->c }};
 
     for (int i = 0; i < 3; i++) {
         errorCode = readValue(coefficients[i].letter, coefficients[i].coefficient);
@@ -144,22 +148,27 @@ int readEquation(Equation *equation) {
     return SUCCESS;
 }
 
-int main() {
-    Equation equation = {};
-    int errorCode = readEquation(&equation);
-
+void checkErrorCode(int errorCode) {
     switch (errorCode) {
         case 0:
             break;
         case 1:
             fprintf(stderr, "Too many input attempts (5).");
-            return EXIT_FAILURE;
+            abort();
         case 2:
             fprintf(stderr, "EOF in the end of input!");
-            return EXIT_FAILURE;
+            abort();
         default:
-            fprintf(stderr, "");
+            fprintf(stderr, "Unknown error code");
+            abort();
     }
+}
+
+int main() {
+    Equation equation = {};
+    int errorCode = readEquation(&equation);
+
+    checkErrorCode(errorCode);
 
     EquationSolution solution = {};
     solve(&equation, &solution);
