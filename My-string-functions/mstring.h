@@ -37,4 +37,6 @@ char *mFgets(char *s, int n, FILE *stream);
 
 char *mStrdup(const char *str);
 
+char *mGetline(FILE *stream, char *s, char dump = EOF);
+
 #endif //MIPT_SUMMER_SCHOOL_MSTRING_H

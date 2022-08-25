@@ -5,6 +5,8 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <math.h>
+#include <stddef.h>
+
 #include "assert.h"
 
 #include "mstring.h"
@@ -102,7 +104,24 @@ char *mStrncat(char *s, const char *cs, int n) {
     return s;
 }
 
+// TODO
 char *mFgets(char *s, int n, FILE *stream) {
+    if (stream != nullptr) {
+        for (int i = 0; i < n; i++) {
+            char val = fgetc(stream);
+
+            if (val == '\n' || val == EOF) {
+                return NULL;
+            }
+
+            s[i] = val;
+        }
+
+        mStrcat(s, "\0");
+
+        return s;
+    }
+
     return NULL;
 }
 
@@ -112,4 +131,21 @@ char *mStrdup(const char *str) {
     mStrcat(result, "\0");
 
     return result;
+}
+
+char *mGetline(FILE *stream, char *s, char dump) {
+    int val = fgetc(stream);
+
+    if (val == EOF || val == '\n' || val == dump) {
+        return NULL;
+    }
+
+    while (val != EOF && val != '\n' && val != dump) {
+        *s = val;
+        s++;
+
+        val = fgetc(stream);
+    }
+
+    return s;
 }

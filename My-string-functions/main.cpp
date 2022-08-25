@@ -8,11 +8,9 @@
 #include "mstring.h"
 
 int main() {
-    char *code = mStrdup("loser");
-    printf(code);
-
-    free(code);
-
+    char s[MAX_STRING] = "test";
+    char *code = mGetline(stdin, s, 'a');
+    printf("%s", s);
 
     return 0;
 }
