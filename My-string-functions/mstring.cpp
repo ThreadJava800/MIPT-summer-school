@@ -73,5 +73,11 @@ char *mStrncpy(char *s, const char *cs, size_t n) {
 
 
 char *mStrcat(char *s, const char *cs) {
+    int sLen = mStrlen(s), csLen = mStrlen(cs);
 
+    for (int i = 0; i < csLen; i++) {
+        s[i + sLen] = cs[i];
+    }
+
+    return s;
 }

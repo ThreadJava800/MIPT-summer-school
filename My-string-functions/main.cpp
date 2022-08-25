@@ -7,8 +7,9 @@
 #include "mstring.h"
 
 int main() {
-    char s[100] = "testtq";
-    char *code = mStrncpy(s, "hello", 10);
+    char s[MAX_STRING] = "petya ";
+    char *code = mStrcat(s, "haha");
+    printf(s);
 
     return 0;
 }
