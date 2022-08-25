@@ -8,8 +8,7 @@
 
 int main() {
     char *s;
-    char *code = mStrcpy(s, "hello");
-    printf("code:%s cs:%s s:%s", code, "hello", s);
+    char *code = mStrncpy(s, "hello", 9);
 
     return 0;
 }

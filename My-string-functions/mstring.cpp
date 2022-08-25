@@ -44,3 +44,25 @@ char *mStrcpy(char *s, const char *cs) {
 
     return s;
 }
+
+char *mStrncpy(char *s, const char *cs, size_t n) {
+    size_t csLen = mStrlen(cs);
+
+    if (csLen < n) {
+        mStrcpy(s, cs);
+
+        for (int i = csLen + 1; i < csLen + csLen - n; i++) {
+            s[i] = '\0';
+            s++;
+        }
+
+        //printf("%s\n", s);
+    }
+    else {
+        for (int i = 0; i <= n; i++) {
+            s[i] = cs[i];
+        }
+    }
+
+    return s;
+}

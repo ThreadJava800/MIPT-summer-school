@@ -25,4 +25,6 @@ int mStrlen(const char *cs);
 
 char *mStrcpy(char *s, const char *cs);
 
+char *mStrncpy(char *s, const char *cs, size_t n);
+
 #endif //MIPT_SUMMER_SCHOOL_MSTRING_H
