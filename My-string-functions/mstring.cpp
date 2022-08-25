@@ -101,3 +101,15 @@ char *mStrncat(char *s, const char *cs, int n) {
 
     return s;
 }
+
+char *mFgets(char *s, int n, FILE *stream) {
+    return NULL;
+}
+
+char *mStrdup(const char *str) {
+    char *result = (char *) malloc(mStrlen(str) + 1);
+    mStrcpy(result, str);
+    mStrcat(result, "\0");
+
+    return result;
+}

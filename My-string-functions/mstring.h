@@ -33,4 +33,8 @@ char *mStrcat(char *s, const char *cs);
 
 char *mStrncat(char *s, const char *cs, int n);
 
+char *mFgets(char *s, int n, FILE *stream);
+
+char *mStrdup(const char *str);
+
 #endif //MIPT_SUMMER_SCHOOL_MSTRING_H
