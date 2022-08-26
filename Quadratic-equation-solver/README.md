@@ -1,5 +1,5 @@
 # Quadratic-equation-solver
-This program takes coefficients of quadratic equation and returns solution for it.
+This program takes coefficients of quadratic equation and returns solution for it. <br />
 To generate documentation using doxygen type:
 >doxygen -g Doxyfile
 
