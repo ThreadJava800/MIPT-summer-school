@@ -14,7 +14,7 @@
 int mPuts(const char *string) {
     int resultCode = EOF;
 
-    printf(string);
+    printf("%s", string);
     resultCode = mStrlen(string) + 1;
 
     return resultCode;
@@ -22,15 +22,10 @@ int mPuts(const char *string) {
 
 char *mStrchr(const char *cs, int c) {
     int n = mStrlen(cs);
-    char *result = (char *) malloc(n + 1);
-
 
     for (int i = 0; i < n; i++) {
         if (cs[i] == c) {
-            for (int j = 0; j < n - i; j++) {
-                result[j] = cs[i + j];
-            }
-            return result;
+            return (char *) cs[i];
         }
     }
 
@@ -111,7 +106,6 @@ char *mStrncat(char *s, const char *cs, int n) {
     return s;
 }
 
-// TODO
 char *mFgets(char *s, int n, FILE *stream) {
     if (stream != nullptr) {
         for (int i = 0; i < n; i++) {
@@ -135,17 +129,11 @@ char *mFgets(char *s, int n, FILE *stream) {
 char *mStrdup(const char *str) {
     char *result = (char *) malloc(mStrlen(str) + 1);
     mStrcpy(result, str);
-    mStrcat(result, "\0");
-
     return result;
 }
 
 char *mGetline(FILE *stream, char *s, char dump) {
     int val = fgetc(stream);
-
-    if (val == EOF || val == '\n' || val == dump) {
-        return NULL;
-    }
 
     while (val != EOF && val != '\n' && val != dump) {
         *s = val;
@@ -155,4 +143,10 @@ char *mGetline(FILE *stream, char *s, char dump) {
     }
 
     return s;
+
+    /**
+     * Онегин:
+     *
+     * Файл - в порядке алфавитном / с обратной стороны
+     */
 }
