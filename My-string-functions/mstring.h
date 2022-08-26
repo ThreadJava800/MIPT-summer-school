@@ -6,12 +6,12 @@
 #define MIPT_SUMMER_SCHOOL_MSTRING_H
 
 /**
- * @brief Maximum length of string
+ * Maximum length of string
  */
 const int MAX_STRING = 4096;
 
 /**
- * @brief Prints string
+ * Prints string
  *
  * @param string - string to print
  * @return error code: EOF on error or amount of characters
@@ -19,7 +19,7 @@ const int MAX_STRING = 4096;
 int mPuts(const char *string);
 
 /**
- * @brief Returns index of first entry of char to string
+ * Returns index of first entry of char to string
  *
  * @param cs - string
  * @param c - char to check
@@ -28,7 +28,7 @@ int mPuts(const char *string);
 char *mStrchr(const char *cs, int c);
 
 /**
- * @brief Returns length of char*
+ * Returns length of char*
  *
  * @param size_t - length of string
  * @return length of string
@@ -36,7 +36,7 @@ char *mStrchr(const char *cs, int c);
 int mStrlen(const char *cs);
 
 /**
- * @brief Copies one string to another
+ * Copies one string to another
  *
  * @param s - string where to make copy
  * @param cs - string we are copying
@@ -45,7 +45,7 @@ int mStrlen(const char *cs);
 char *mStrcpy(char *s, const char *cs);
 
 /**
- * @brief Copies only first @n symbols from one string to another
+ * Copies only first @n symbols from one string to another
  *
  * @param s - string where to make copy
  * @param cs - string we are copying
@@ -55,7 +55,7 @@ char *mStrcpy(char *s, const char *cs);
 char *mStrncpy(char *s, const char *cs, size_t n);
 
 /**
- * @brief Concatenates two strings
+ * Concatenates two strings
  *
  * @param s - string where we are going to add new string
  * @param cs - string we concatenate to @s
@@ -64,7 +64,7 @@ char *mStrncpy(char *s, const char *cs, size_t n);
 char *mStrcat(char *s, const char *cs);
 
 /**
- * @brief Concatenates only n first numbers of @cs
+ * Concatenates only n first numbers of @cs
  *
  * @param s - string where we are going to add new string
  * @param cs - string we concatenate to @s (only @n first numbers)
@@ -74,7 +74,7 @@ char *mStrcat(char *s, const char *cs);
 char *mStrncat(char *s, const char *cs, int n);
 
 /**
- * @brief reads n characters from @stream
+ * Reads n characters from @stream
  *
  * @param s - string we are reading
  * @param n - amount of symbols
@@ -84,7 +84,7 @@ char *mStrncat(char *s, const char *cs, int n);
 char *mFgets(char *s, int n, FILE *stream);
 
 /**
- * @brief allocates new pointer and copies string value there
+ * Allocates new pointer and copies string value there
  *
  * @param str - string to copy
  * @return newly allocated pointer
@@ -92,7 +92,7 @@ char *mFgets(char *s, int n, FILE *stream);
 char *mStrdup(const char *str);
 
 /**
- * @brief get line
+ * Get line
  *
  * Reads string while EOF or \n met. Also if desired you can set a char
  * to read string till

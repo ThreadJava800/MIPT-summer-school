@@ -21,9 +21,16 @@ int mPuts(const char *string) {
 }
 
 char *mStrchr(const char *cs, int c) {
-    for (int i = 0; i < mStrlen(cs); i++) {
+    int n = mStrlen(cs);
+    char *result = (char *) malloc(n + 1);
+
+
+    for (int i = 0; i < n; i++) {
         if (cs[i] == c) {
-            return (char*)cs[i];
+            for (int j = 0; j < n - i; j++) {
+                result[j] = cs[i + j];
+            }
+            return result;
         }
     }
 
