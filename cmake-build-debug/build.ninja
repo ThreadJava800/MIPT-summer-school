@@ -49,14 +49,26 @@ cmake_ninja_workdir = /home/vladimir/Projects/MIPT$ summer$ school/cmake-build-d
 
 build cmake_object_order_depends_target_MIPT_summer_school: phony || CMakeFiles/MIPT_summer_school.dir
 
-build CMakeFiles/MIPT_summer_school.dir/My-string-functions/mstring.cpp.o: CXX_COMPILER__MIPT_summer_school_Debug /home/vladimir/Projects/MIPT$ summer$ school/My-string-functions/mstring.cpp || cmake_object_order_depends_target_MIPT_summer_school
-  DEP_FILE = CMakeFiles/MIPT_summer_school.dir/My-string-functions/mstring.cpp.o.d
+build CMakeFiles/MIPT_summer_school.dir/Onegin/main.cpp.o: CXX_COMPILER__MIPT_summer_school_Debug /home/vladimir/Projects/MIPT$ summer$ school/Onegin/main.cpp || cmake_object_order_depends_target_MIPT_summer_school
+  DEP_FILE = CMakeFiles/MIPT_summer_school.dir/Onegin/main.cpp.o.d
   FLAGS = -g -std=gnu++17
   OBJECT_DIR = CMakeFiles/MIPT_summer_school.dir
-  OBJECT_FILE_DIR = CMakeFiles/MIPT_summer_school.dir/My-string-functions
+  OBJECT_FILE_DIR = CMakeFiles/MIPT_summer_school.dir/Onegin
 
-build CMakeFiles/MIPT_summer_school.dir/My-string-functions/tests.cpp.o: CXX_COMPILER__MIPT_summer_school_Debug /home/vladimir/Projects/MIPT$ summer$ school/My-string-functions/tests.cpp || cmake_object_order_depends_target_MIPT_summer_school
-  DEP_FILE = CMakeFiles/MIPT_summer_school.dir/My-string-functions/tests.cpp.o.d
+build CMakeFiles/MIPT_summer_school.dir/Onegin/onegin.cpp.o: CXX_COMPILER__MIPT_summer_school_Debug /home/vladimir/Projects/MIPT$ summer$ school/Onegin/onegin.cpp || cmake_object_order_depends_target_MIPT_summer_school
+  DEP_FILE = CMakeFiles/MIPT_summer_school.dir/Onegin/onegin.cpp.o.d
+  FLAGS = -g -std=gnu++17
+  OBJECT_DIR = CMakeFiles/MIPT_summer_school.dir
+  OBJECT_FILE_DIR = CMakeFiles/MIPT_summer_school.dir/Onegin
+
+build CMakeFiles/MIPT_summer_school.dir/Onegin/tests.cpp.o: CXX_COMPILER__MIPT_summer_school_Debug /home/vladimir/Projects/MIPT$ summer$ school/Onegin/tests.cpp || cmake_object_order_depends_target_MIPT_summer_school
+  DEP_FILE = CMakeFiles/MIPT_summer_school.dir/Onegin/tests.cpp.o.d
+  FLAGS = -g -std=gnu++17
+  OBJECT_DIR = CMakeFiles/MIPT_summer_school.dir
+  OBJECT_FILE_DIR = CMakeFiles/MIPT_summer_school.dir/Onegin
+
+build CMakeFiles/MIPT_summer_school.dir/My-string-functions/mstring.cpp.o: CXX_COMPILER__MIPT_summer_school_Debug /home/vladimir/Projects/MIPT$ summer$ school/My-string-functions/mstring.cpp || cmake_object_order_depends_target_MIPT_summer_school
+  DEP_FILE = CMakeFiles/MIPT_summer_school.dir/My-string-functions/mstring.cpp.o.d
   FLAGS = -g -std=gnu++17
   OBJECT_DIR = CMakeFiles/MIPT_summer_school.dir
   OBJECT_FILE_DIR = CMakeFiles/MIPT_summer_school.dir/My-string-functions
@@ -69,7 +81,7 @@ build CMakeFiles/MIPT_summer_school.dir/My-string-functions/tests.cpp.o: CXX_COM
 #############################################
 # Link the executable MIPT_summer_school
 
-build MIPT_summer_school: CXX_EXECUTABLE_LINKER__MIPT_summer_school_Debug CMakeFiles/MIPT_summer_school.dir/My-string-functions/mstring.cpp.o CMakeFiles/MIPT_summer_school.dir/My-string-functions/tests.cpp.o
+build MIPT_summer_school: CXX_EXECUTABLE_LINKER__MIPT_summer_school_Debug CMakeFiles/MIPT_summer_school.dir/Onegin/main.cpp.o CMakeFiles/MIPT_summer_school.dir/Onegin/onegin.cpp.o CMakeFiles/MIPT_summer_school.dir/Onegin/tests.cpp.o CMakeFiles/MIPT_summer_school.dir/My-string-functions/mstring.cpp.o
   FLAGS = -g
   LINK_FLAGS = -rdynamic
   LINK_LIBRARIES = -lm
