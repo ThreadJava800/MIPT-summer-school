@@ -16,11 +16,21 @@ struct Strings {
 
 Strings fromFile(const char *fileAddress);
 
+void printStringArray(Strings strings);
+
 /**
  * Prints string provided in file
  *
  * @param file - file address
  */
 void printFile(const char *fileAddress);
+
+char *removePuncts(char *string);
+
+int compareString(char *string1, char *string2);
+
+void quickSort(Strings strings);
+
+void sortAsc(Strings strings);
 
 #endif //MIPT_SUMMER_SCHOOL_ONEGIN_H
