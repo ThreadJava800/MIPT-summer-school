@@ -7,8 +7,11 @@
 
 int main() {
     Strings strings = fromFile("/home/vladimir/Projects/MIPT summer school/Onegin/test.txt");
-    sortAsc(strings);
+    quickSort(strings);
+
+    printStringArray(strings);
 
     free(strings.array);
+
     return 0;
 }

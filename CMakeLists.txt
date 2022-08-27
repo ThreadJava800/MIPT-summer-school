@@ -5,6 +5,6 @@ set(CMAKE_CXX_STANDARD 17)
 # "Quadratic-equation-solver/tests.cpp"
 # "Quadratic-equation-solver/equation.cpp"
 # My-string-functions/main.cpp
-add_executable(MIPT_summer_school  Onegin/main.cpp Onegin/onegin.cpp Onegin/onegin.h Onegin/tests.cpp My-string-functions/mstring.cpp)
+add_executable(MIPT_summer_school  Onegin/main.cpp Onegin/onegin.cpp Onegin/onegin.h My-string-functions/mstring.cpp)
 
 target_link_libraries(MIPT_summer_school m)

@@ -8,6 +8,7 @@
 #include "malloc.h"
 #include "string.h"
 #include "errno.h"
+#include "assert.h"
 
 
 Strings fromFile(const char *fileAddress) {
@@ -42,7 +43,7 @@ void printFile(const char *fileAddress) {
 
 char *removePuncts(char *string) {
     int stringLen = strlen(string), noPunctIndex = 0;
-    char *noPunct = (char *) malloc((stringLen + 1) * sizeof(char));
+    char *noPunct = (char *) malloc((stringLen) * sizeof(char));
 
     for (int i = 0; i < stringLen; i++) {
         if (string[i] != '.' && string[i] != ',' && string[i] != '!' && string[i] != '?' && string[i] != ';' && string[i] != ':') {
@@ -51,12 +52,17 @@ char *removePuncts(char *string) {
         }
     }
 
+    noPunct[noPunctIndex - 1] = '\0';
+
     return noPunct;
 }
 
 int compareString(char *string1, char *string2) {
     char *noPunct1 = removePuncts(string1);
     char *noPunct2 = removePuncts(string2);
+
+    assert(noPunct1 != nullptr);
+    assert(noPunct2 != nullptr);
 
     int result = strcmp(noPunct1, noPunct2);
 
@@ -87,11 +93,4 @@ void quickSort(Strings strings) {
             r--;
         }
     }
-
-
-}
-
-void sortAsc(Strings strings) {
-    quickSort(strings);
-    printStringArray(strings);
 }
