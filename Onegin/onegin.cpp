@@ -2,10 +2,10 @@
 // Created by vladimir on 26.08.22.
 //
 
-#include <cstring>
 #include "stdio.h"
 #include "onegin.h"
 #include "malloc.h"
+#include "string.h"
 
 
 Strings fromFile(const char *fileAddress) {
@@ -16,7 +16,7 @@ Strings fromFile(const char *fileAddress) {
 
     while (getline(&currentLine, &len, file) != -1) {
         strings = (char **) realloc(strings, (lineCount + 1) * sizeof(char *));
-        strings[lineCount] = (char *) malloc(strlen(currentLine) * sizeof(char));
+        strings[lineCount] = (char *) malloc((strlen(currentLine) + 1) * sizeof(char));
         strcpy(strings[lineCount], currentLine);
 
         lineCount++;
@@ -28,9 +28,9 @@ Strings fromFile(const char *fileAddress) {
 void printFile(const char *fileAddress) {
     Strings strings = fromFile(fileAddress);
 
-    printf("%s", strings.array[2]);
+    //printf("%s", strings.array[2]);
 
-//    for (int i = 0; i < strings.size; i++) {
-//        printf("%s\n", strings.array[i]);
-//    }
+    for (int i = 0; i < strings.size; i++) {
+        printf("%s", strings.array[i]);
+    }
 }

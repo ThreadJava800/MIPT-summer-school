@@ -7,6 +7,8 @@
 
 #include "stdio.h"
 
+const int MAX_STRING = 4096;
+
 struct Strings {
     char **array = {};
     size_t size = 0;
