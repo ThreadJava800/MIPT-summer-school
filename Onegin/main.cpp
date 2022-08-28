@@ -7,9 +7,9 @@
 
 int main() {
     Strings strings = fromFile("/home/vladimir/Projects/MIPT summer school/Onegin/test.txt");
-    quickSort(strings);
+    sortDesc(strings);
 
-    printStringArray(strings);
+    //printStringArray(strings);
 
     free(strings.array);
 

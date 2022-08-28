@@ -12,14 +12,18 @@
 
 
 Strings fromFile(const char *fileAddress) {
-    size_t len = 0, lineCount = 0;
+    size_t len = 0, lineCount = 0, stringsSize = 1;
     FILE *file = fopen(fileAddress, "r");
-    char *currentLine = (char *) malloc(sizeof(char *));
-    char **strings = (char **) malloc(sizeof(char *));
+    char *currentLine = (char *) calloc(1, sizeof(char *));
+    char **strings = (char **) calloc(stringsSize, sizeof(char *));
 
     while (getline(&currentLine, &len, file) != -1) {
-        strings = (char **) realloc(strings, (lineCount + 1) * sizeof(char *));
-        strings[lineCount] = (char *) malloc((strlen(currentLine) + 1) * sizeof(char));
+        if (lineCount == stringsSize) {
+            stringsSize *= 2;
+            strings = (char **) realloc(strings, stringsSize * sizeof(char *));
+        }
+
+        strings[lineCount] = (char *) calloc(strlen(currentLine) + 1, sizeof(char));
         strcpy(strings[lineCount], currentLine);
 
         lineCount++;
@@ -43,7 +47,7 @@ void printFile(const char *fileAddress) {
 
 char *removePuncts(char *string) {
     int stringLen = strlen(string), noPunctIndex = 0;
-    char *noPunct = (char *) malloc((stringLen) * sizeof(char));
+    char *noPunct = (char *) calloc(stringLen, sizeof(char));
 
     for (int i = 0; i < stringLen; i++) {
         if (string[i] != '.' && string[i] != ',' && string[i] != '!' && string[i] != '?' && string[i] != ';' && string[i] != ':') {
@@ -51,8 +55,6 @@ char *removePuncts(char *string) {
             noPunctIndex++;
         }
     }
-
-    noPunct[noPunctIndex - 1] = '\0';
 
     return noPunct;
 }
@@ -72,15 +74,21 @@ int compareString(char *string1, char *string2) {
     return result;
 }
 
-void quickSort(Strings strings) {
+int compareFlipped(char *string1, char *string2) {
+
+
+    return result;
+}
+
+void quickSort(Strings strings, int (*comparator)(char *string1, char *string2)) {
     int pivot = strings.size / 2;
     int l = 0, r = strings.size - 1;
 
     while (l <= r) {
-        while (compareString(strings.array[l], strings.array[pivot]) < 0) {
+        while (comparator(strings.array[l], strings.array[pivot]) < 0) {
             l++;
         }
-        while (compareString(strings.array[r], strings.array[pivot]) > 0) {
+        while (comparator(strings.array[r], strings.array[pivot]) > 0) {
             r--;
         }
 
@@ -93,4 +101,12 @@ void quickSort(Strings strings) {
             r--;
         }
     }
+}
+
+void sortAsc(Strings strings) {
+    quickSort(strings, compareString);
+}
+
+void sortDesc(Strings strings) {
+    quickSort(strings, compareFlipped);
 }

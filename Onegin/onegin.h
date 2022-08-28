@@ -65,11 +65,17 @@ char *removePuncts(char *string);
  */
 int compareString(char *string1, char *string2);
 
+int compareFlipped(char *string1, char *string2);
+
 /**
  * My realization of quick sort, used to sort strings using @compareString
  *
  * @param strings - structure with array of strings
  */
-void quickSort(Strings strings);
+void quickSort(Strings strings, int (*comparator)(char *string1, char *string2));
+
+void sortAsc(Strings strings);
+
+void sortDesc(Strings strings);
 
 #endif //MIPT_SUMMER_SCHOOL_ONEGIN_H
