@@ -2,39 +2,54 @@
 // Created by vladimir on 26.08.22.
 //
 
-#include <stdlib.h>
 #include "stdio.h"
 #include "onegin.h"
 #include "malloc.h"
 #include "string.h"
-#include "errno.h"
-#include "assert.h"
 
 
 Strings fromFile(const char *fileAddress) {
     size_t len = 0, lineCount = 0, stringsSize = 1;
     FILE *file = fopen(fileAddress, "r");
-    char *currentLine = (char *) calloc(1, sizeof(char *));
+    char current;
+    char *buffer = (char *) calloc(1, 128);
     char **strings = (char **) calloc(stringsSize, sizeof(char *));
 
-    while (getline(&currentLine, &len, file) != -1) {
-        if (lineCount == stringsSize) {
-            stringsSize *= 2;
-            strings = (char **) realloc(strings, stringsSize * sizeof(char *));
+    while ((current = fgetc(file)) != EOF) {
+        if (current == '\n') {
+            buffer[len] = '\0';
+
+            strings[lineCount] = (char *) calloc(len, sizeof(char));
+            strcpy(strings[lineCount], buffer);
+            lineCount++;
+
+            if (lineCount == stringsSize) {
+                stringsSize *= 2;
+                strings = (char **) realloc(strings, stringsSize * sizeof(char *));
+            }
+
+            buffer[0] = '\0';
+            len = 0;
+        } else {
+            buffer[len] = current;
+            len++;
         }
-
-        strings[lineCount] = (char *) calloc(strlen(currentLine) + 1, sizeof(char));
-        strcpy(strings[lineCount], currentLine);
-
-        lineCount++;
     }
+
+    buffer[len] = '\0';
+    strings[lineCount] = (char *) calloc(len, sizeof(char));
+    strcpy(strings[lineCount], buffer);
+    lineCount++;
+
+    free(buffer);
+    fclose(file);
 
     return {.array = strings, .size = lineCount};
 }
 
 void printStringArray(Strings strings) {
     for (int i = 0; i < strings.size; i++) {
-        printf("%s", strings.array[i]);
+        printf("%s\n", strings.array[i]);
     }
 }
 
@@ -45,40 +60,42 @@ void printFile(const char *fileAddress) {
     free(strings.array);
 }
 
-char *removePuncts(char *string) {
-    int stringLen = strlen(string), noPunctIndex = 0;
-    char *noPunct = (char *) calloc(stringLen, sizeof(char));
-
-    for (int i = 0; i < stringLen; i++) {
-        if (string[i] != '.' && string[i] != ',' && string[i] != '!' && string[i] != '?' && string[i] != ';' && string[i] != ':') {
-            noPunct[noPunctIndex] = string[i];
-            noPunctIndex++;
+int compareString(char *string1, char *string2) {
+    while (*string1 != '\0' || *string2 != '\0') {
+        if (*string1 == '!' || *string1 == '?' || *string1 == '.' || *string1 == ',' || *string1 == ' ' || *string1 == ';' || *string1 == ':') {
+            string1++;
         }
+        if (*string2 == '!' || *string2 == '?' || *string2 == '.' || *string2 == ',' || *string2 == ' ' || *string2 == ';' || *string2 == ':') {
+            string2++;
+        }
+
+        if (*string1 > *string2) {
+            return 1;
+        }
+        if (*string1 < *string2) {
+            return -1;
+        }
+
+
+        if (*string1 == '\0') {
+            return 1;
+        }
+        if (*string2 == '\0') {
+            return -1;
+        }
+
+        string1++;
+        string2++;
     }
 
-    return noPunct;
+    return 0;
 }
 
-int compareString(char *string1, char *string2) {
-    char *noPunct1 = removePuncts(string1);
-    char *noPunct2 = removePuncts(string2);
-
-    assert(noPunct1 != nullptr);
-    assert(noPunct2 != nullptr);
-
-    int result = strcmp(noPunct1, noPunct2);
-
-    free(noPunct1);
-    free(noPunct2);
-
-    return result;
-}
-
-int compareFlipped(char *string1, char *string2) {
-
-
-    return result;
-}
+//int compareFlipped(char *string1, char *string2) {
+//
+//
+//    return result;
+//}
 
 void quickSort(Strings strings, int (*comparator)(char *string1, char *string2)) {
     int pivot = strings.size / 2;
@@ -107,6 +124,6 @@ void sortAsc(Strings strings) {
     quickSort(strings, compareString);
 }
 
-void sortDesc(Strings strings) {
-    quickSort(strings, compareFlipped);
-}
+//void sortDesc(Strings strings) {
+//    quickSort(strings, compareFlipped);
+//}
