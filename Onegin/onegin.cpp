@@ -2,17 +2,24 @@
 // Created by vladimir on 26.08.22.
 //
 
-#include "stdio.h"
+#include <stdio.h>
+#include <malloc.h>
+#include <string.h>
+#include <assert.h>
+
 #include "onegin.h"
-#include "malloc.h"
-#include "string.h"
+
 
 
 Strings fromFile(const char *fileAddress) {
     size_t len = 0, lineCount = 0, stringsSize = 1;
     FILE *file = fopen(fileAddress, "r");
-    char current;
-    char *buffer = (char *) calloc(1, 128);
+
+    assert(file != nullptr);
+
+    char current = EOF;
+//    char *buffer = (char *) calloc(1, 128); // no check
+    char buffer[128] = {};
     char **strings = (char **) calloc(stringsSize, sizeof(char *));
 
     while ((current = fgetc(file)) != EOF) {
@@ -92,9 +99,7 @@ int compareString(char *string1, char *string2) {
 }
 
 //int compareFlipped(char *string1, char *string2) {
-//
-//
-//    return result;
+//    int index1 =
 //}
 
 void quickSort(Strings strings, int (*comparator)(char *string1, char *string2)) {
@@ -124,6 +129,6 @@ void sortAsc(Strings strings) {
     quickSort(strings, compareString);
 }
 
-//void sortDesc(Strings strings) {
-//    quickSort(strings, compareFlipped);
-//}
+void sortDesc(Strings strings) {
+    quickSort(strings, compareFlipped);
+}
