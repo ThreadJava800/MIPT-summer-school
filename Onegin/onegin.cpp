@@ -6,52 +6,49 @@
 #include <malloc.h>
 #include <string.h>
 #include <assert.h>
+#include <unistd.h>
+#include <sys/stat.h>
+#include <ctype.h>
 
 #include "onegin.h"
 
 
 
 Strings fromFile(const char *fileAddress) {
-    size_t len = 0, lineCount = 0, stringsSize = 1;
-    FILE *file = fopen(fileAddress, "r");
+    int stringAmount = 0;
+    char current = EOF;
+    FILE *file = fopen(fileAddress, "rb+");
 
     assert(file != nullptr);
 
-    char current = EOF;
-//    char *buffer = (char *) calloc(1, 128); // no check
-    char buffer[128] = {};
-    char **strings = (char **) calloc(stringsSize, sizeof(char *));
+    fseek(file, 0, SEEK_END);
+    long fileSize = ftell(file);
+    fseek(file, SEEK_END - 2, SEEK_SET);
 
-    while ((current = fgetc(file)) != EOF) {
-        if (current == '\n') {
-            buffer[len] = '\0';
+    char *buffer = (char *) calloc(fileSize, sizeof(char));
+    fread(buffer, sizeof(char), fileSize, file);
 
-            strings[lineCount] = (char *) calloc(len, sizeof(char));
-            strcpy(strings[lineCount], buffer);
-            lineCount++;
-
-            if (lineCount == stringsSize) {
-                stringsSize *= 2;
-                strings = (char **) realloc(strings, stringsSize * sizeof(char *));
-            }
-
-            buffer[0] = '\0';
-            len = 0;
-        } else {
-            buffer[len] = current;
-            len++;
+    for (int i = 0; i <= fileSize; i++) {
+        if (buffer[i] == '\n' || buffer[i] == '\0') {
+            stringAmount++;
         }
     }
 
-    buffer[len] = '\0';
-    strings[lineCount] = (char *) calloc(len, sizeof(char));
-    strcpy(strings[lineCount], buffer);
-    lineCount++;
+    char **strings = (char **) calloc(stringAmount, sizeof(char *));
+    int stringsIndex = 1;
+    strings[0] = &buffer[0];
+    for (int i = 0; i < fileSize; i++) {
+        if (buffer[i] == '\n' || buffer[i] == '\0') {
+            buffer[i] = '\0';
+            strings[stringsIndex] = &buffer[i + 1];
 
-    free(buffer);
+            stringsIndex++;
+        }
+    }
+
     fclose(file);
 
-    return {.array = strings, .size = lineCount};
+    return {.buffer = buffer, .array = strings, .size = stringAmount};
 }
 
 void printStringArray(Strings strings) {
@@ -60,29 +57,19 @@ void printStringArray(Strings strings) {
     }
 }
 
-void printFile(const char *fileAddress) {
-    Strings strings = fromFile(fileAddress);
-    printStringArray(strings);
-
-    free(strings.array);
-}
-
 int compareString(char *string1, char *string2) {
     while (*string1 != '\0' || *string2 != '\0') {
-        if (*string1 == '!' || *string1 == '?' || *string1 == '.' || *string1 == ',' || *string1 == ' ' || *string1 == ';' || *string1 == ':') {
+        while (!isalnum(*string1) && *string1 == ' ') {
             string1++;
         }
-        if (*string2 == '!' || *string2 == '?' || *string2 == '.' || *string2 == ',' || *string2 == ' ' || *string2 == ';' || *string2 == ':') {
+        while (!isalnum(*string2) && *string2 == ' ') {
             string2++;
         }
 
-        if (*string1 > *string2) {
-            return 1;
+        int result = *string1 - *string2;
+        if (result != 0) {
+            return result;
         }
-        if (*string1 < *string2) {
-            return -1;
-        }
-
 
         if (*string1 == '\0') {
             return 1;
@@ -129,6 +116,6 @@ void sortAsc(Strings strings) {
     quickSort(strings, compareString);
 }
 
-void sortDesc(Strings strings) {
-    quickSort(strings, compareFlipped);
-}
+//void sortDesc(Strings strings) {
+//    quickSort(strx`ings, compareFlipped);
+//}

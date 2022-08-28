@@ -12,6 +12,7 @@ int main() {
     printStringArray(strings);
 
     free(strings.array);
+    free(strings.buffer);
 
     return 0;
 }

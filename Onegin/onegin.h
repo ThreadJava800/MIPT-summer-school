@@ -19,8 +19,9 @@ const int MAX_STRING = 4096;
  * @param size - amount of lines
  */
 struct Strings {
+    char *buffer = {};
     char **array = {};
-    size_t size = 0;
+    int size = 0;
 };
 
 /**
@@ -37,13 +38,6 @@ Strings fromFile(const char *fileAddress);
  * @param strings - structure with array of string
  */
 void printStringArray(Strings strings);
-
-/**
- * Prints string provided in file
- *
- * @param file - file address
- */
-void printFile(const char *fileAddress);
 
 /**
  * Removes punctuation marks from string and returns reference
