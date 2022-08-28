@@ -9,7 +9,9 @@ int main() {
     Strings strings = fromFile("/home/vladimir/Projects/MIPT summer school/Onegin/test.txt");
     sortAsc(strings);
 
-    printStringArray(strings);
+    writeToFile("/home/vladimir/Projects/MIPT summer school/Onegin/output.txt", &strings);
+
+    //printStringArray(strings);
 
     free(strings.array);
     free(strings.buffer);

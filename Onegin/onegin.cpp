@@ -4,10 +4,7 @@
 
 #include <stdio.h>
 #include <malloc.h>
-#include <string.h>
 #include <assert.h>
-#include <unistd.h>
-#include <sys/stat.h>
 #include <ctype.h>
 
 #include "onegin.h"
@@ -49,6 +46,18 @@ Strings fromFile(const char *fileAddress) {
     fclose(file);
 
     return {.buffer = buffer, .array = strings, .size = stringAmount};
+}
+
+void writeToFile(FILE *file, const char *string) {
+    fprintf(file, "%s\n", string);
+}
+
+void writeToFile(const char *fileAddress, const Strings *strings) {
+    FILE *file = fopen(fileAddress, "w");
+
+    for (int i = 0; i < strings->size; i++) {
+        writeToFile(file, strings->array[i]);
+    }
 }
 
 void printStringArray(Strings strings) {

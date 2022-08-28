@@ -32,6 +32,10 @@ struct Strings {
  */
 Strings fromFile(const char *fileAddress);
 
+void writeToFile(FILE *file, const char *string);
+
+void writeToFile(const char *fileAddress, const Strings *strings);
+
 /**
  * Just prints array of string
  *
