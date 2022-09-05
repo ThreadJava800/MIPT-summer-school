@@ -2,18 +2,12 @@
 // Created by vladimir on 26.08.22.
 //
 
-#include <stdio.h>
-#include <malloc.h>
-#include <assert.h>
-#include <ctype.h>
-
 #include "onegin.h"
 
 
 
 Strings fromFile(const char *fileAddress) {
     int stringAmount = 0;
-    char current = EOF;
     FILE *file = fopen(fileAddress, "rb+");
 
     assert(file != nullptr);
@@ -32,20 +26,29 @@ Strings fromFile(const char *fileAddress) {
     }
 
     char **strings = (char **) calloc(stringAmount, sizeof(char *));
+    int *composition = (int *) calloc(stringAmount, sizeof(int));
+
     int stringsIndex = 1;
     strings[0] = &buffer[0];
+    composition[0] = 0;
+
     for (int i = 0; i < fileSize; i++) {
         if (buffer[i] == '\n' || buffer[i] == '\0') {
             buffer[i] = '\0';
             strings[stringsIndex] = &buffer[i + 1];
 
+            composition[stringsIndex] = stringsIndex;
+
             stringsIndex++;
         }
     }
+    buffer -= fileSize;
+
+    printf("%s", buffer);
 
     fclose(file);
 
-    return {.buffer = buffer, .array = strings, .size = stringAmount};
+    return {.buffer = buffer, .array = strings, .composition = composition, .size = stringAmount};
 }
 
 void writeToFile(FILE *file, const char *string) {
@@ -53,16 +56,19 @@ void writeToFile(FILE *file, const char *string) {
 }
 
 void writeToFile(const char *fileAddress, const Strings *strings) {
-    FILE *file = fopen(fileAddress, "w");
+    FILE *file = fopen(fileAddress, "a");
 
     for (int i = 0; i < strings->size; i++) {
-        writeToFile(file, strings->array[i]);
+        writeToFile(file, strings->array[strings->composition[i]]);
     }
+    writeToFile(file, "\n");
+
+    fclose(file);
 }
 
-void printStringArray(Strings strings) {
-    for (int i = 0; i < strings.size; i++) {
-        printf("%s\n", strings.array[i]);
+void printStringArray(Strings *strings) {
+    for (int i = 0; i < strings->size; i++) {
+        printf("%s\n", strings->array[i]);
     }
 }
 
@@ -74,6 +80,8 @@ int compareString(char *string1, char *string2) {
         while (!isalnum(*string2) && *string2 == ' ') {
             string2++;
         }
+
+        printf("%s %s\n", string1, string2);
 
         int result = *string1 - *string2;
         if (result != 0) {
@@ -94,26 +102,73 @@ int compareString(char *string1, char *string2) {
     return 0;
 }
 
-//int compareFlipped(char *string1, char *string2) {
-//    int index1 =
-//}
+int compareFlipped(char *string1, char *string2) {
+    //printf("%s %s\n", string1, string2);
+    int count = 0;
 
-void quickSort(Strings strings, int (*comparator)(char *string1, char *string2)) {
-    int pivot = strings.size / 2;
-    int l = 0, r = strings.size - 1;
+    while (*string1 != '\0') {
+        printf("%c", *string1);
+        string1++;
+        count++;
+    }
+
+    printf("%c", '\n');
+
+    while (count >= 0) {
+        printf("%c", *string1);
+        string1--;
+        count--;
+    }
+
+    printf("%c", '\n');
+
+//    while ((end1 >= string1) || (end2 >= string2)) {
+//        while (!isalnum(*end1) && *end1 == ' ') {
+//            end1--;
+//        }
+//        while (!isalnum(*end2) && *end2 == ' ') {
+//            end2--;
+//        }
+//
+//        if (*end1 > *end2) {
+//            return 1;
+//        }
+//        if (*end1 < *end2) {
+//            return -1;
+//        }
+//
+//        if (end1 == string1) {
+//            return 1;
+//        }
+//        if (end2 == string2) {
+//            return -1;
+//        }
+//
+//        end1--;
+//        end2--;
+//    }
+
+    return 0;
+}
+
+void quickSort(Strings *strings, int (*comparator)(char *string1, char *string2)) {
+    resetComposition(strings);
+
+    int pivot = strings->size / 2;
+    int l = 0, r = strings->size - 1;
 
     while (l <= r) {
-        while (comparator(strings.array[l], strings.array[pivot]) < 0) {
+        while (comparator(strings->array[l], strings->array[pivot]) < 0) {
             l++;
         }
-        while (comparator(strings.array[r], strings.array[pivot]) > 0) {
+        while (comparator(strings->array[r], strings->array[pivot]) > 0) {
             r--;
         }
 
         if (l < r) {
-            char *tmp = strings.array[l];
-            strings.array[l] = strings.array[r];
-            strings.array[r] = tmp;
+            int tmp = strings->composition[l];
+            strings->composition[l] = strings->composition[r];
+            strings->composition[r] = tmp;
 
             l++;
             r--;
@@ -121,10 +176,16 @@ void quickSort(Strings strings, int (*comparator)(char *string1, char *string2))
     }
 }
 
-void sortAsc(Strings strings) {
+void sortAsc(Strings *strings) {
     quickSort(strings, compareString);
 }
 
-//void sortDesc(Strings strings) {
-//    quickSort(strx`ings, compareFlipped);
-//}
+void sortDesc(Strings *strings) {
+    quickSort(strings, compareFlipped);
+}
+
+void resetComposition(Strings *strings) {
+    for (int i = 0; i < strings->size; i++) {
+        strings->composition[i] = i;
+    }
+}

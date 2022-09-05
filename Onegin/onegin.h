@@ -5,7 +5,11 @@
 #ifndef MIPT_SUMMER_SCHOOL_ONEGIN_H
 #define MIPT_SUMMER_SCHOOL_ONEGIN_H
 
-#include "stdio.h"
+#include <stdio.h>
+#include <malloc.h>
+#include <assert.h>
+#include <ctype.h>
+#include <string.h>
 
 /**
  * Length of max string
@@ -21,6 +25,7 @@ const int MAX_STRING = 4096;
 struct Strings {
     char *buffer = {};
     char **array = {};
+    int *composition = {};
     int size = 0;
 };
 
@@ -41,7 +46,7 @@ void writeToFile(const char *fileAddress, const Strings *strings);
  *
  * @param strings - structure with array of string
  */
-void printStringArray(Strings strings);
+void printStringArray(Strings *strings);
 
 /**
  * Removes punctuation marks from string and returns reference
@@ -70,10 +75,12 @@ int compareFlipped(char *string1, char *string2);
  *
  * @param strings - structure with array of strings
  */
-void quickSort(Strings strings, int (*comparator)(char *string1, char *string2));
+void quickSort(Strings *strings, int (*comparator)(char *string1, char *string2));
 
-void sortAsc(Strings strings);
+void sortAsc(Strings *strings);
 
-void sortDesc(Strings strings);
+void sortDesc(Strings *strings);
+
+void resetComposition(Strings *strings);
 
 #endif //MIPT_SUMMER_SCHOOL_ONEGIN_H
