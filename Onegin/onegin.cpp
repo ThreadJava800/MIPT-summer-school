@@ -2,7 +2,9 @@
 // Created by vladimir on 26.08.22.
 //
 
+#include <valarray>
 #include "onegin.h"
+#include <string.h>
 
 
 
@@ -103,24 +105,7 @@ int compareString(char *string1, char *string2) {
 }
 
 int compareFlipped(char *string1, char *string2) {
-    //printf("%s %s\n", string1, string2);
-    int count = 0;
-
-    while (*string1 != '\0') {
-        printf("%c", *string1);
-        string1++;
-        count++;
-    }
-
-    printf("%c", '\n');
-
-    while (count >= 0) {
-        printf("%c", *string1);
-        string1--;
-        count--;
-    }
-
-    printf("%c", '\n');
+    strrev();
 
 //    while ((end1 >= string1) || (end2 >= string2)) {
 //        while (!isalnum(*end1) && *end1 == ' ') {

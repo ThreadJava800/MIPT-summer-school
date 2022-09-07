@@ -4,6 +4,7 @@
 #include "stdlib.h"
 
 #include "onegin.h"
+#include "locale.h"
 
 int main() {
     Strings strings = fromFile("/home/vladimir/Projects/MIPT summer school/Onegin/test.txt");
