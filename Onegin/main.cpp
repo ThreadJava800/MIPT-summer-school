@@ -9,7 +9,7 @@
 int main() {
     Strings strings = fromFile("/home/vladimir/Projects/MIPT summer school/Onegin/test.txt");
 
-    sortAsc(&strings);
+    sortDesc(&strings);
     writeToFile("/home/vladimir/Projects/MIPT summer school/Onegin/output.txt", &strings);
 
 //    sortDesc(&strings);

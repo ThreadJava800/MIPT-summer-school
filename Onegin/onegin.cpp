@@ -104,53 +104,83 @@ int compareBytes(int char1, int char2) {
     int res1 = 0, res2 = 0;
 
     for (int i = 0; i < 8; i++) {
-        res1 += ((!!((char1 << 0) & 0x80)) * (int)pow(2, 8 - i - 1));
-        res2 += ((!!((char2 << 0) & 0x80)) * (int)pow(2, 8 - i - 1));
+        res1 += ((!!((char1 << i) & 0x80)) * (int)pow(2, 8 - i - 1));
+        res2 += ((!!((char2 << i) & 0x80)) * (int)pow(2, 8 - i - 1));
     }
 
     return res1 - res2;
 }
 
 int compareFlipped(char *string1, char *string2) {
-    while (*string1 != '\0' || *string2 != '\0') {
+    int count1 = 0, count2 = 0;
+
+    while (*string1 != '\0') {
+        string1++;
+        count1++;
+    }
+    while (*string2 != '\0') {
+        string2++;
+        count2++;
+    }
+
+    while (count1 >= 0 || count2 >= 0) {
         while (!isalnum(*string1) && *string1 == ' ') {
-            string1++;
+            count1--;
+            string1--;
         }
         while (!isalnum(*string2) && *string2 == ' ') {
-            string2++;
+            count2--;
+            string2--;
         }
 
-        if (!!((*string1 << 0) & 0x80) == 0) {
-            if (!!((*string2 << 0) & 0x80) == 1) {
-                return -1;
-            } else {
-                string1++;
-                string2++;
+        if ((!!((*string1 << 0) & 0x80)) == 1) {
+            if ((!!((*string2 << 0) & 0x80)) == 1) {
+                int secondPart = compareBytes(*string1, *string2);
 
-                int result = compareBytes(*string1, *string2);
-                if (result != 0) {
-                    return result;
-                }
-            }
-        } else {
-            if (!!((*string2 << 0) & 0x80) == 0) {
-                return 1;
-            } else {
-                int result = compareBytes(*string1, *string2);
+                string1--;
+                string2--;
 
-                if (result != 0) {
-                    return result;
+                count1--;
+                count2--;
+
+                int firstPart = compareBytes(*string1, *string2);
+                if (firstPart > 0) {
+                    return 1;
+                } else if (firstPart < 0) {
+                    return -1;
                 } else {
-                    string1++;
-                    string2++;
-
-                    result = compareBytes(*string1, *string2);
-                    if (result != 0) {
-                        return result;
+                    if (secondPart != 0) {
+                        return secondPart;
                     }
                 }
+            } else {
+                return 1;
+            }
+        } else {
+            if ((!!((*string2 << 0) & 0x80)) == 1) {
+                return -1;
+            } else {
+                int result = compareBytes(*string1, *string2);
+
+                if (result != 0) {
+                    return result;
+                }
             }
         }
+
+
+
+        if (count1 <= 0) {
+            break;
+        }
+        if (count2 <= 0) {
+            break;
+        }
+
+        count1--;
+        count2--;
+        string1--;
+        string2--;
     }
 
     return 0;
