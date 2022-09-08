@@ -8,15 +8,12 @@
 
 int main() {
     Strings strings = fromFile("/home/vladimir/Projects/MIPT summer school/Onegin/test.txt");
-    for (int i = 0; i < strings.size; i++) {
-        printf("%d ", strings.composition[i]);
-    }
 
-//    sortAsc(&strings);
-//    writeToFile("/home/vladimir/Projects/MIPT summer school/Onegin/output.txt", &strings);
-
-    sortDesc(&strings);
+    sortAsc(&strings);
     writeToFile("/home/vladimir/Projects/MIPT summer school/Onegin/output.txt", &strings);
+
+//    sortDesc(&strings);
+//    writeToFile("/home/vladimir/Projects/MIPT summer school/Onegin/output.txt", &strings);
 
 //    FILE *file = fopen("/home/vladimir/Projects/MIPT summer school/Onegin/output.txt", "a");
 //
@@ -27,8 +24,6 @@ int main() {
 //        }
 //        strings.buffer++;
 //    }
-
-    //printStringArray(strings);
 
 //    free(strings.array);
 //    free(strings.buffer);

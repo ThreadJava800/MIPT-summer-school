@@ -5,7 +5,7 @@
 #include <valarray>
 #include "onegin.h"
 #include <string.h>
-
+#include <clocale>
 
 
 Strings fromFile(const char *fileAddress) {
@@ -46,8 +46,6 @@ Strings fromFile(const char *fileAddress) {
     }
     buffer -= fileSize;
 
-    printf("%s", buffer);
-
     fclose(file);
 
     return {.buffer = buffer, .array = strings, .composition = composition, .size = stringAmount};
@@ -83,8 +81,6 @@ int compareString(char *string1, char *string2) {
             string2++;
         }
 
-        printf("%s %s\n", string1, string2);
-
         int result = *string1 - *string2;
         if (result != 0) {
             return result;
@@ -104,69 +100,100 @@ int compareString(char *string1, char *string2) {
     return 0;
 }
 
-int compareFlipped(char *string1, char *string2) {
-    strrev();
+int compareBytes(int char1, int char2) {
+    int res1 = 0, res2 = 0;
 
-//    while ((end1 >= string1) || (end2 >= string2)) {
-//        while (!isalnum(*end1) && *end1 == ' ') {
-//            end1--;
-//        }
-//        while (!isalnum(*end2) && *end2 == ' ') {
-//            end2--;
-//        }
-//
-//        if (*end1 > *end2) {
-//            return 1;
-//        }
-//        if (*end1 < *end2) {
-//            return -1;
-//        }
-//
-//        if (end1 == string1) {
-//            return 1;
-//        }
-//        if (end2 == string2) {
-//            return -1;
-//        }
-//
-//        end1--;
-//        end2--;
-//    }
+    for (int i = 0; i < 8; i++) {
+        res1 += ((!!((char1 << 0) & 0x80)) * (int)pow(2, 8 - i - 1));
+        res2 += ((!!((char2 << 0) & 0x80)) * (int)pow(2, 8 - i - 1));
+    }
+
+    return res1 - res2;
+}
+
+int compareFlipped(char *string1, char *string2) {
+    while (*string1 != '\0' || *string2 != '\0') {
+        while (!isalnum(*string1) && *string1 == ' ') {
+            string1++;
+        }
+        while (!isalnum(*string2) && *string2 == ' ') {
+            string2++;
+        }
+
+        if (!!((*string1 << 0) & 0x80) == 0) {
+            if (!!((*string2 << 0) & 0x80) == 1) {
+                return -1;
+            } else {
+                string1++;
+                string2++;
+
+                int result = compareBytes(*string1, *string2);
+                if (result != 0) {
+                    return result;
+                }
+            }
+        } else {
+            if (!!((*string2 << 0) & 0x80) == 0) {
+                return 1;
+            } else {
+                int result = compareBytes(*string1, *string2);
+
+                if (result != 0) {
+                    return result;
+                } else {
+                    string1++;
+                    string2++;
+
+                    result = compareBytes(*string1, *string2);
+                    if (result != 0) {
+                        return result;
+                    }
+                }
+            }
+        }
+    }
 
     return 0;
 }
 
-void quickSort(Strings *strings, int (*comparator)(char *string1, char *string2)) {
-    resetComposition(strings);
+void quickSort(Strings *strings, int (*comparator)(char *string1, char *string2), int first, int last) {
+    if (first < last) {
+        int pivot = first;
+        int l = first, r = last;
 
-    int pivot = strings->size / 2;
-    int l = 0, r = strings->size - 1;
+        while (l < r) {
+            while (comparator(strings->array[strings->composition[l]], strings->array[strings->composition[pivot]]) < 0 && l < last) {
+                l++;
+            }
+            while (comparator(strings->array[strings->composition[r]], strings->array[strings->composition[pivot]]) > 0) {
+                r--;
+            }
 
-    while (l <= r) {
-        while (comparator(strings->array[l], strings->array[pivot]) < 0) {
-            l++;
+            if (l < r) {
+                int tmp = strings->composition[l];
+                strings->composition[l] = strings->composition[r];
+                strings->composition[r] = tmp;
+
+                l++;
+                r--;
+            }
         }
-        while (comparator(strings->array[r], strings->array[pivot]) > 0) {
-            r--;
-        }
 
-        if (l < r) {
-            int tmp = strings->composition[l];
-            strings->composition[l] = strings->composition[r];
-            strings->composition[r] = tmp;
+        int tmp = strings->composition[pivot];
+        strings->composition[pivot]=strings->composition[r];
+        strings->composition[r]=tmp;
 
-            l++;
-            r--;
-        }
+        quickSort(strings, comparator, first, r - 1);
+        quickSort(strings, comparator, r + 1, last);
     }
 }
 
 void sortAsc(Strings *strings) {
-    quickSort(strings, compareString);
+    quickSort(strings, compareString, 0, strings->size);
 }
 
 void sortDesc(Strings *strings) {
-    quickSort(strings, compareFlipped);
+    quickSort(strings, compareFlipped, 0, strings->size);
 }
 
 void resetComposition(Strings *strings) {

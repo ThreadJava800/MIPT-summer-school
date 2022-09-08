@@ -68,6 +68,8 @@ char *removePuncts(char *string);
  */
 int compareString(char *string1, char *string2);
 
+int compareBytes(int char1, int char2);
+
 int compareFlipped(char *string1, char *string2);
 
 /**
@@ -75,7 +77,7 @@ int compareFlipped(char *string1, char *string2);
  *
  * @param strings - structure with array of strings
  */
-void quickSort(Strings *strings, int (*comparator)(char *string1, char *string2));
+void quickSort(Strings *strings, int (*comparator)(char *string1, char *string2), int first, int last);
 
 void sortAsc(Strings *strings);
 
