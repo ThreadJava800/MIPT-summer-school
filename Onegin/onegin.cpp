@@ -2,10 +2,7 @@
 // Created by vladimir on 26.08.22.
 //
 
-#include <valarray>
 #include "onegin.h"
-#include <string.h>
-#include <clocale>
 
 
 Strings fromFile(const char *fileAddress) {
@@ -44,11 +41,10 @@ Strings fromFile(const char *fileAddress) {
             stringsIndex++;
         }
     }
-    buffer -= fileSize;
 
     fclose(file);
 
-    return {.buffer = buffer, .array = strings, .composition = composition, .size = stringAmount};
+    return {.array = strings, .composition = composition, .size = stringAmount};
 }
 
 void writeToFile(FILE *file, const char *string) {
@@ -219,10 +215,12 @@ void quickSort(Strings *strings, int (*comparator)(char *string1, char *string2)
 }
 
 void sortAsc(Strings *strings) {
+    resetComposition(strings);
     quickSort(strings, compareString, 0, strings->size);
 }
 
 void sortDesc(Strings *strings) {
+    resetComposition(strings);
     quickSort(strings, compareFlipped, 0, strings->size);
 }
 
