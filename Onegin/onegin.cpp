@@ -124,11 +124,11 @@ int compareFlipped(char *string1, char *string2) {
     }
 
     while (count1 >= 0 || count2 >= 0) {
-        while (!isalnum(*string1) && *string1 == ' ') {
+        while (!isalnum(*string1) && (!!((*string1 << 0) & 0x80)) == 0) {
             count1--;
             string1--;
         }
-        while (!isalnum(*string2) && *string2 == ' ') {
+        while (!isalnum(*string2) && (!!((*string2 << 0) & 0x80)) == 0) {
             count2--;
             string2--;
         }
