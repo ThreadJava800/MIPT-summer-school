@@ -100,7 +100,7 @@ void testCompareFlipped() {
     }
 }
 
-bool compareArrays(const int arr1[], const int arr2[], int size) {
+bool compareArrays(const long int arr1[], const long int arr2[], long int size) {
     for (int i = 0; i < size; i++) {
         if (arr1[i] != arr2[i]) {
             return false;
@@ -109,7 +109,7 @@ bool compareArrays(const int arr1[], const int arr2[], int size) {
     return true;
 }
 
-void printErrorArray(int *arr, int size, char *pref) {
+void printErrorArray(long int *arr, long int size, char *pref) {
     printf(RED_COLOR"%s: ", pref);
     for (int i = 0;  i < size; i++) {
         printf(RED_COLOR"%d ", arr[i]);
@@ -122,8 +122,8 @@ void testQSort() {
     int successful = 0;
 
     char *test[] = {"Владимир", "Андрей", "Андроник"};
-    int composition[] = {0, 1, 2};
-    int corrComp[] = {1, 2, 0};
+    long int composition[] = {0, 1, 2};
+    long int corrComp[] = {1, 2, 0};
     Strings string = {.array = test, .composition = composition, .size = 3};
 
     for (int i = 0; i < testCount; i++) {

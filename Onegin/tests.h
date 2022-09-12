@@ -23,9 +23,9 @@ struct CharCompare{
 };
 
 struct QSortTest{
-    int size;
+    long int size;
     char (*strings)[];
-    int testComposition[];
+    long int testComposition[];
 };
 
 void testCompare();
@@ -34,9 +34,9 @@ void testBytes();
 
 void testCompareFlipped();
 
-bool compareArrays(const int *arr1, const int *arr2, int size);
+bool compareArrays(const long int *arr1, const long int *arr2, long int size);
 
-void printErrorArray(int *arr, int size, char *pref);
+void printErrorArray(long int *arr, long int size, char *pref);
 
 void testQSort();
 

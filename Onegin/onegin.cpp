@@ -6,32 +6,34 @@
 
 
 Strings fromFile(const char *fileAddress) {
-    int stringAmount = 0;
+    long int stringAmount = 0;
     FILE *file = fopen(fileAddress, "rb+");
 
     assert(file != nullptr);
 
     fseek(file, 0, SEEK_END);
-    long fileSize = ftell(file);
+    long int fileSize = ftell(file);
     fseek(file, SEEK_END - 2, SEEK_SET);
 
-    char *buffer = (char *) calloc(fileSize, sizeof(char));
-    fread(buffer, sizeof(char), fileSize, file);
+    assert(fileSize >= 0);
 
-    for (int i = 0; i <= fileSize; i++) {
+    char *buffer = (char *) calloc((size_t) fileSize, sizeof(char)); //fileSize can't be negative!
+    fread(buffer, sizeof(char), (size_t) fileSize, file); //fileSize can't be negative!
+
+    for (long int i = 0; i <= fileSize; i++) {
         if (buffer[i] == '\n' || buffer[i] == '\0') {
             stringAmount++;
         }
     }
 
-    char **strings = (char **) calloc(stringAmount, sizeof(char *));
-    int *composition = (int *) calloc(stringAmount, sizeof(int));
+    char **strings = (char **) calloc((size_t) stringAmount, sizeof(char *)); //stringAmount can't be negative!
+    long int *composition = (long int *) calloc((size_t) stringAmount, sizeof(int)); //stringAmount can't be negative!
 
-    int stringsIndex = 1;
+    long int stringsIndex = 1;
     strings[0] = &buffer[0];
     composition[0] = 0;
 
-    for (int i = 0; i < fileSize; i++) {
+    for (long int i = 0; i < fileSize; i++) {
         if (buffer[i] == '\n' || buffer[i] == '\0') {
             buffer[i] = '\0';
             strings[stringsIndex] = &buffer[i + 1];
@@ -54,7 +56,7 @@ void writeToFile(FILE *file, const char *string) {
 void writeToFile(const char *fileAddress, const Strings *strings) {
     FILE *file = fopen(fileAddress, "a");
 
-    for (int i = 0; i < strings->size; i++) {
+    for (long int i = 0; i < strings->size; i++) {
         writeToFile(file, strings->array[strings->composition[i]]);
     }
     writeToFile(file, "\n");
@@ -63,7 +65,7 @@ void writeToFile(const char *fileAddress, const Strings *strings) {
 }
 
 void printStringArray(Strings *strings) {
-    for (int i = 0; i < strings->size; i++) {
+    for (long int i = 0; i < strings->size; i++) {
         printf("%s\n", strings->array[i]);
     }
 }
@@ -182,10 +184,10 @@ int compareFlipped(char *string1, char *string2) {
     return 0;
 }
 
-void quickSort(Strings *strings, int (*comparator)(char *string1, char *string2), int first, int last) {
+void quickSort(Strings *strings, int (*comparator)(char *string1, char *string2), long int first, long int last) {
     if (first < last) {
-        int pivot = first;
-        int l = first, r = last;
+        long int pivot = first;
+        long int l = first, r = last;
 
         while (l < r) {
             while (comparator(strings->array[strings->composition[l]], strings->array[strings->composition[pivot]]) < 0 && l < last) {
@@ -196,7 +198,7 @@ void quickSort(Strings *strings, int (*comparator)(char *string1, char *string2)
             }
 
             if (l < r) {
-                int tmp = strings->composition[l];
+                long int tmp = strings->composition[l];
                 strings->composition[l] = strings->composition[r];
                 strings->composition[r] = tmp;
 
@@ -205,7 +207,7 @@ void quickSort(Strings *strings, int (*comparator)(char *string1, char *string2)
             }
         }
 
-        int tmp = strings->composition[pivot];
+        long int tmp = strings->composition[pivot];
         strings->composition[pivot]=strings->composition[r];
         strings->composition[r]=tmp;
 
@@ -225,7 +227,13 @@ void sortDesc(Strings *strings) {
 }
 
 void resetComposition(Strings *strings) {
-    for (int i = 0; i < strings->size; i++) {
+    for (long int i = 0; i < strings->size; i++) {
         strings->composition[i] = i;
     }
+}
+
+void breadGenerator(Strings *strings) {
+    sortDesc(strings);
+
+
 }

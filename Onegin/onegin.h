@@ -26,8 +26,8 @@ const int MAX_STRING = 4096;
  */
 struct Strings {
     char **array = {};
-    int *composition = {};
-    int size = 0;
+    long int *composition = {};
+    long int size = 0;
 };
 
 /**
@@ -99,7 +99,7 @@ int compareFlipped(char *string1, char *string2);
  * @param first - left border
  * @param last - right border
  */
-void quickSort(Strings *strings, int (*comparator)(char *string1, char *string2), int first, int last);
+void quickSort(Strings *strings, int (*comparator)(char *string1, char *string2), long int first, long int last);
 
 /**
  * Sorts strings in alphabetic order from the beginning
@@ -121,5 +121,12 @@ void sortDesc(Strings *strings);
  * @param strings
  */
 void resetComposition(Strings *strings);
+
+/**
+ * Generates nonsense ryphm
+ *
+ * @param strings
+ */
+void breadGenerator(Strings *strings);
 
 #endif //MIPT_SUMMER_SCHOOL_ONEGIN_H
