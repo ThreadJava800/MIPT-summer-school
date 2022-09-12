@@ -70,7 +70,7 @@ void printStringArray(Strings *strings);
  * @return negative value if string1 < string2, 0 if equals and
  * positive value if string1 > string2
  */
-int compareString(char *string1, char *string2);
+int compareString(void *v1, void *v2);
 
 /**
  * Compares 2 byte chars
@@ -89,7 +89,7 @@ int compareBytes(int char1, int char2);
  * @return negative value if string1 < string2, 0 if equals and
  * positive value if string1 > string2
  */
-int compareFlipped(char *string1, char *string2);
+int compareFlipped(void *v1, void *v2);
 
 /**
  * My realization of quick sort, used to sort strings using @compareString
@@ -99,7 +99,7 @@ int compareFlipped(char *string1, char *string2);
  * @param first - left border
  * @param last - right border
  */
-void quickSort(Strings *strings, int (*comparator)(char *string1, char *string2), long int first, long int last);
+void quickSort(Strings *strings, int (*comparator)(void *v1, void *v2), long int first, long int last);
 
 /**
  * Sorts strings in alphabetic order from the beginning

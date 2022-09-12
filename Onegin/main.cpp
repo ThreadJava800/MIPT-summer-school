@@ -6,7 +6,7 @@
 #include "tests.h"
 
 int main() {
-    //runTests();
+    // runTests();
 
     Strings strings = fromFile("/home/vladimir/Projects/MIPT summer school/Onegin/test.txt");
 

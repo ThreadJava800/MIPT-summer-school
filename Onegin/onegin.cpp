@@ -70,7 +70,9 @@ void printStringArray(Strings *strings) {
     }
 }
 
-int compareString(char *string1, char *string2) {
+int compareString(void *v1, void *v2) {
+    char *string1 = (char *) v1, *string2 = (char *) v2;
+
     while (*string1 != '\0' || *string2 != '\0') {
         while (!isalnum(*string1) && *string1 == ' ') {
             string1++;
@@ -109,7 +111,9 @@ int compareBytes(int char1, int char2) {
     return res1 - res2;
 }
 
-int compareFlipped(char *string1, char *string2) {
+int compareFlipped(void *v1, void *v2) {
+    char *string1 = (char *) v1, *string2 = (char *) v2;
+
     int count1 = 0, count2 = 0;
 
     while (*string1 != '\0') {
@@ -184,7 +188,7 @@ int compareFlipped(char *string1, char *string2) {
     return 0;
 }
 
-void quickSort(Strings *strings, int (*comparator)(char *string1, char *string2), long int first, long int last) {
+void quickSort(Strings *strings, int (*comparator)(void *v1, void *v2), long int first, long int last) {
     if (first < last) {
         long int pivot = first;
         long int l = first, r = last;
