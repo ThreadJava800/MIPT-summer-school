@@ -4,7 +4,6 @@
 
 #include "onegin.h"
 
-
 Strings fromFile(const char *fileAddress) {
     long int stringAmount = 0;
     FILE *file = fopen(fileAddress, "rb+");
@@ -17,8 +16,11 @@ Strings fromFile(const char *fileAddress) {
 
     assert(fileSize >= 0);
 
-    char *buffer = (char *) calloc((size_t) fileSize, sizeof(char)); //fileSize can't be negative!
-    fread(buffer, sizeof(char), (size_t) fileSize, file); //fileSize can't be negative!
+    char *buffer = (char *) calloc((size_t) fileSize + 1, sizeof(char)); //fileSize can't be negative!
+
+    assert(buffer != nullptr);
+
+    fread(buffer, sizeof(char), (size_t) fileSize + 1, file); //fileSize can't be negative!
 
     for (long int i = 0; i <= fileSize; i++) {
         if (buffer[i] == '\n' || buffer[i] == '\0') {
@@ -27,7 +29,9 @@ Strings fromFile(const char *fileAddress) {
     }
 
     char **strings = (char **) calloc((size_t) stringAmount, sizeof(char *)); //stringAmount can't be negative!
+    assert(strings != nullptr);
     long int *composition = (long int *) calloc((size_t) stringAmount, sizeof(int)); //stringAmount can't be negative!
+    assert(composition != nullptr);
 
     long int stringsIndex = 1;
     strings[0] = &buffer[0];
@@ -50,11 +54,14 @@ Strings fromFile(const char *fileAddress) {
 }
 
 void writeToFile(FILE *file, const char *string) {
+    assert(file != nullptr);
     fprintf(file, "%s\n", string);
 }
 
-void writeToFile(const char *fileAddress, const Strings *strings) {
+void writeToFile(const char *fileAddress, const Strings *strings) { //fputs
     FILE *file = fopen(fileAddress, "a");
+
+    assert(file != nullptr);
 
     for (long int i = 0; i < strings->size; i++) {
         writeToFile(file, strings->array[strings->composition[i]]);
@@ -65,13 +72,16 @@ void writeToFile(const char *fileAddress, const Strings *strings) {
 }
 
 void printStringArray(Strings *strings) {
+    assert(strings != nullptr);
     for (long int i = 0; i < strings->size; i++) {
         printf("%s\n", strings->array[i]);
     }
 }
 
 int compareString(void *v1, void *v2) {
+    assert(v1 != nullptr && v2 != nullptr);
     char *string1 = (char *) v1, *string2 = (char *) v2;
+    assert(string1 != nullptr && string2 != nullptr);
 
     while (*string1 != '\0' || *string2 != '\0') {
         while (!isalnum(*string1) && *string1 == ' ') {
@@ -104,15 +114,17 @@ int compareBytes(int char1, int char2) {
     int res1 = 0, res2 = 0;
 
     for (int i = 0; i < 8; i++) {
-        res1 += ((!!((char1 << i) & 0x80)) * (int)pow(2, 8 - i - 1));
-        res2 += ((!!((char2 << i) & 0x80)) * (int)pow(2, 8 - i - 1));
+        res1 += ((!!((char1 << i) & 0x80))  << (8 - i - 1));
+        res2 += ((!!((char2 << i) & 0x80)) << (8 - i - 1));
     }
 
     return res1 - res2;
 }
 
 int compareFlipped(void *v1, void *v2) {
+    assert(v1 != nullptr && v2 != nullptr);
     char *string1 = (char *) v1, *string2 = (char *) v2;
+    assert(string1 != nullptr && string2 != nullptr);
 
     int count1 = 0, count2 = 0;
 
@@ -135,8 +147,8 @@ int compareFlipped(void *v1, void *v2) {
             string2--;
         }
 
-        if ((!!((*string1 << 0) & 0x80)) == 1) {
-            if ((!!((*string2 << 0) & 0x80)) == 1) {
+        if (*string1 & 0x80) {
+            if (*string2 & 0x80) {
                 int secondPart = compareBytes(*string1, *string2);
 
                 string1--;
@@ -155,11 +167,11 @@ int compareFlipped(void *v1, void *v2) {
                         return secondPart;
                     }
                 }
-            } else {
+            } else /* if !(*string2 & 0x80)*/{
                 return 1;
             }
         } else {
-            if ((!!((*string2 << 0) & 0x80)) == 1) {
+            if (*string2 & 0x80) {
                 return -1;
             } else {
                 int result = compareBytes(*string1, *string2);
@@ -169,8 +181,6 @@ int compareFlipped(void *v1, void *v2) {
                 }
             }
         }
-
-
 
         if (count1 <= 0) {
             break;
@@ -221,23 +231,20 @@ void quickSort(Strings *strings, int (*comparator)(void *v1, void *v2), long int
 }
 
 void sortAsc(Strings *strings) {
+    assert(strings != nullptr);
     resetComposition(strings);
     quickSort(strings, compareString, 0, strings->size);
 }
 
-void sortDesc(Strings *strings) {
+void sortReversed(Strings *strings) {
+    assert(strings != nullptr);
     resetComposition(strings);
     quickSort(strings, compareFlipped, 0, strings->size);
 }
 
 void resetComposition(Strings *strings) {
+    assert(strings != nullptr);
     for (long int i = 0; i < strings->size; i++) {
         strings->composition[i] = i;
     }
-}
-
-void breadGenerator(Strings *strings) {
-    sortDesc(strings);
-
-
 }

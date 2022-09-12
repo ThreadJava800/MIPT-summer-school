@@ -113,7 +113,7 @@ void sortAsc(Strings *strings);
  *
  * @param strings - pointer to structure with array of strings
  */
-void sortDesc(Strings *strings);
+void sortReversed(Strings *strings);
 
 /**
  * Resets composition to (0, 1, 2...)

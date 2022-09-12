@@ -13,7 +13,7 @@ int main() {
     sortAsc(&strings);
     writeToFile("/home/vladimir/Projects/MIPT summer school/Onegin/output.txt", &strings);
 
-    sortDesc(&strings);
+    sortReversed(&strings);
     writeToFile("/home/vladimir/Projects/MIPT summer school/Onegin/output.txt", &strings);
 
     resetComposition(&strings);
