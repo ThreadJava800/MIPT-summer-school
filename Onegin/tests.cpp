@@ -155,6 +155,6 @@ void runTests() {
     printf(BLACK_COLOR"\n---Flipped strings compare---\n");
     testCompareFlipped();
 
-    printf(BLACK_COLOR"\n---Qsort test---\n");
-    testQSort();
+//    printf(BLACK_COLOR"\n---Qsort test---\n");
+//    testQSort();
 }

@@ -3,11 +3,8 @@
 //
 
 #include "onegin.h"
-#include "tests.h"
 
 int main() {
-    // runTests();
-
     Strings strings = fromFile("/home/vladimir/Projects/MIPT summer school/Onegin/test.txt");
 
     sortAsc(&strings);

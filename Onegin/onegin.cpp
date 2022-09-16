@@ -4,23 +4,27 @@
 
 #include "onegin.h"
 
-Strings fromFile(const char *fileAddress) {
-    long int stringAmount = 0;
-    FILE *file = fopen(fileAddress, "rb+");
-
-    assert(file != nullptr);
-
+long int getFileSize(FILE *file) {
     fseek(file, 0, SEEK_END);
     long int fileSize = ftell(file);
     fseek(file, SEEK_END - 2, SEEK_SET);
 
+    return fileSize;
+}
+
+char *readTextToBuffer(FILE *file, long int fileSize) {
     assert(fileSize >= 0);
 
     char *buffer = (char *) calloc((size_t) fileSize + 1, sizeof(char)); //fileSize can't be negative!
-
     assert(buffer != nullptr);
 
     fread(buffer, sizeof(char), (size_t) fileSize + 1, file); //fileSize can't be negative!
+
+    return buffer;
+}
+
+long int countLines(char *buffer, long int fileSize) {
+    long int stringAmount = 0;
 
     for (long int i = 0; i <= fileSize; i++) {
         if (buffer[i] == '\n' || buffer[i] == '\0') {
@@ -28,9 +32,11 @@ Strings fromFile(const char *fileAddress) {
         }
     }
 
-    char **strings = (char **) calloc((size_t) stringAmount, sizeof(char *)); //stringAmount can't be negative!
+    return stringAmount;
+}
+
+void chopLines(char *buffer, char **strings, long int *composition, long int fileSize) {
     assert(strings != nullptr);
-    long int *composition = (long int *) calloc((size_t) stringAmount, sizeof(int)); //stringAmount can't be negative!
     assert(composition != nullptr);
 
     long int stringsIndex = 1;
@@ -47,6 +53,20 @@ Strings fromFile(const char *fileAddress) {
             stringsIndex++;
         }
     }
+}
+
+Strings fromFile(const char *fileAddress) {
+    FILE *file = fopen(fileAddress, "rb+");
+
+    assert(file != nullptr);
+    long int fileSize = getFileSize(file);
+    char *buffer = readTextToBuffer(file, fileSize);
+
+    long int stringAmount = countLines(buffer, fileSize);
+
+    char **strings = (char **) calloc((size_t) stringAmount, sizeof(char *)); //stringAmount can't be negative!
+    long int *composition = (long int *) calloc((size_t) stringAmount, sizeof(int)); //stringAmount can't be negative!
+    chopLines(buffer, strings, composition, fileSize);
 
     fclose(file);
 
@@ -114,7 +134,7 @@ int compareBytes(int char1, int char2) {
     int res1 = 0, res2 = 0;
 
     for (int i = 0; i < 8; i++) {
-        res1 += ((!!((char1 << i) & 0x80))  << (8 - i - 1));
+        res1 += ((!!((char1 << i) & 0x80))  << (8 - i - 1)); // i bit of a byte
         res2 += ((!!((char2 << i) & 0x80)) << (8 - i - 1));
     }
 
@@ -199,6 +219,8 @@ int compareFlipped(void *v1, void *v2) {
 }
 
 void quickSort(Strings *strings, int (*comparator)(void *v1, void *v2), long int first, long int last) {
+    assert(strings != nullptr);
+
     if (first < last) {
         long int pivot = first;
         long int l = first, r = last;
@@ -232,13 +254,13 @@ void quickSort(Strings *strings, int (*comparator)(void *v1, void *v2), long int
 
 void sortAsc(Strings *strings) {
     assert(strings != nullptr);
-    resetComposition(strings);
+
     quickSort(strings, compareString, 0, strings->size);
 }
 
 void sortReversed(Strings *strings) {
     assert(strings != nullptr);
-    resetComposition(strings);
+
     quickSort(strings, compareFlipped, 0, strings->size);
 }
 

@@ -31,6 +31,42 @@ struct Strings {
 };
 
 /**
+ * Returns amount of bytes in file.
+ *
+ * @param file - pointer to file
+ * @return long int - amount of bytes in file
+ */
+long int getFileSize(FILE *file);
+
+/**
+ * Reads text to buffer
+ *
+ * @param file - pointer to file
+ * @param fileSize - amount of bytes in file
+ * @return pointer to buffer (array of bytes)
+ */
+char *readTextToBuffer(FILE *file, long int fileSize);
+
+/**
+ * Counts amount of lines (\n and \0) in file
+ *
+ * @param buffer - pointer to file text
+ * @param fileSize - amount of bytes in buffer
+ * @return long - amount of lines
+ */
+long int countLines(char *buffer, long int fileSize);
+
+/**
+ * Chops buffer to lines (to array of pointers to buffer)
+ *
+ * @param buffer - raw text
+ * @param strings - array of pointer
+ * @param composition - line order
+ * @param fileSize - amount of bytes in buffer
+ */
+void chopLines(char *buffer, char **strings, long int *composition, long int fileSize);
+
+/**
  * Transports lines from file to @Strings structure
  *
  * @param fileAddress - address of file on computer
@@ -121,12 +157,5 @@ void sortReversed(Strings *strings);
  * @param strings
  */
 void resetComposition(Strings *strings);
-
-/**
- * Generates nonsense ryphm
- *
- * @param strings
- */
-void breadGenerator(Strings *strings);
 
 #endif //MIPT_SUMMER_SCHOOL_ONEGIN_H
