@@ -11,6 +11,7 @@
 #include <ctype.h>
 #include <string.h>
 #include <math.h>
+#include <sys/stat.h>
 
 /**
  * Length of max string
@@ -27,6 +28,7 @@ const int MAX_STRING = 4096;
 struct Strings {
     char **array = {};
     long int *composition = {};
+    char *buffer = {};
     long int size = 0;
 };
 
@@ -36,7 +38,7 @@ struct Strings {
  * @param file - pointer to file
  * @return long int - amount of bytes in file
  */
-long int getFileSize(FILE *file);
+long int getFileSize(const char *fileAddress);
 
 /**
  * Reads text to buffer
@@ -52,9 +54,10 @@ char *readTextToBuffer(FILE *file, long int fileSize);
  *
  * @param buffer - pointer to file text
  * @param fileSize - amount of bytes in buffer
+ * @param pivot - symbol to chop lines to
  * @return long - amount of lines
  */
-long int countLines(char *buffer, long int fileSize);
+long int countLines(char *buffer, long int fileSize, char pivot = '\n');
 
 /**
  * Chops buffer to lines (to array of pointers to buffer)
@@ -62,9 +65,10 @@ long int countLines(char *buffer, long int fileSize);
  * @param buffer - raw text
  * @param strings - array of pointer
  * @param composition - line order
+ * @param pivot - symbol to chop lines to
  * @param fileSize - amount of bytes in buffer
  */
-void chopLines(char *buffer, char **strings, long int *composition, long int fileSize);
+void chopLines(char *buffer, char **strings, long int *composition, long int fileSize, char pivot = '\n');
 
 /**
  * Transports lines from file to @Strings structure
@@ -87,8 +91,9 @@ void writeToFile(FILE *file, const char *string);
  *
  * @param fileAddress - absolute address to file
  * @param strings - array of strings
+ * @param openArgs - argument to open
  */
-void writeToFile(const char *fileAddress, const Strings *strings);
+void writeToFile(const char *fileAddress, const Strings *strings, const char *openArgs = "a");
 
 /**
  * Just prints array of string
@@ -157,5 +162,12 @@ void sortReversed(Strings *strings);
  * @param strings
  */
 void resetComposition(Strings *strings);
+
+/**
+ * Frees memory allocated by strings.
+ *
+ * @param strings - pointer to strings
+ */
+void freeStrings(Strings *strings);
 
 #endif //MIPT_SUMMER_SCHOOL_ONEGIN_H

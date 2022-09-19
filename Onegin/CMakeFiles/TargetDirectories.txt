@@ -1,0 +1,3 @@
+/home/vladimir/Projects/MIPT summer school/Onegin/CMakeFiles/Onegin.dir
+/home/vladimir/Projects/MIPT summer school/Onegin/CMakeFiles/edit_cache.dir
+/home/vladimir/Projects/MIPT summer school/Onegin/CMakeFiles/rebuild_cache.dir

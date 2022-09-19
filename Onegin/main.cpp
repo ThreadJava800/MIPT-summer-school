@@ -5,19 +5,18 @@
 #include "onegin.h"
 
 int main() {
-    Strings strings = fromFile("/home/vladimir/Projects/MIPT summer school/Onegin/test.txt");
+    Strings strings = fromFile("test.txt");
 
     sortAsc(&strings);
-    writeToFile("/home/vladimir/Projects/MIPT summer school/Onegin/output.txt", &strings);
+    writeToFile("output.txt", &strings, "w");
 
     sortReversed(&strings);
-    writeToFile("/home/vladimir/Projects/MIPT summer school/Onegin/output.txt", &strings);
+    writeToFile("output.txt", &strings);
 
     resetComposition(&strings);
-    writeToFile("/home/vladimir/Projects/MIPT summer school/Onegin/output.txt", &strings);
+    writeToFile("output.txt", &strings);
 
-    free(strings.array);
-    free(strings.composition);
+    freeStrings(&strings);
 
     return 0;
 }
