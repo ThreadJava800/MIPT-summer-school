@@ -13,8 +13,7 @@ int main() {
     sortReversed(&strings);
     writeToFile("output.txt", &strings);
 
-    resetComposition(&strings);
-    writeToFile("output.txt", &strings);
+    writeBytesToFile(strings.buffer, strings.bufferSize, "output.txt");
 
     freeStrings(&strings);
 

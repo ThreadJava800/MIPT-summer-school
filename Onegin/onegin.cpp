@@ -36,20 +36,16 @@ long int countLines(char *buffer, long int fileSize, char pivot) {
     return stringAmount;
 }
 
-void chopLines(char *buffer, char **strings, long int *composition, long int fileSize, char pivot) {
+void chopLines(char *buffer, char **strings, long int fileSize, char pivot) {
     assert(strings != nullptr);
-    assert(composition != nullptr);
 
     long int stringsIndex = 1;
     strings[0] = &buffer[0];
-    composition[0] = 0;
 
     for (long int i = 0; i < fileSize; i++) {
         if (buffer[i] == '\n' || buffer[i] == '\0' || buffer[i] == pivot) {
             buffer[i] = '\0';
             strings[stringsIndex] = &buffer[i + 1];
-
-            composition[stringsIndex] = stringsIndex;
 
             stringsIndex++;
         }
@@ -67,13 +63,11 @@ Strings fromFile(const char *fileAddress) {
 
     char **strings = (char **) calloc((size_t) stringAmount, sizeof(char *)); //stringAmount can't be negative!
     assert(strings != nullptr);
-    long int *composition = (long int *) calloc((size_t) (stringAmount + 1), sizeof(int)); //stringAmount can't be negative!
-    assert(strings != nullptr);
 
-    chopLines(buffer, strings, composition, fileSize);
+    chopLines(buffer, strings, fileSize);
     fclose(file);
 
-    return {.array = strings, .composition = composition, .buffer = buffer, .size = stringAmount};
+    return {.array = strings, .buffer = buffer, .bufferSize = fileSize, .size = stringAmount};
 }
 
 void writeToFile(FILE *file, const char *string) {
@@ -87,12 +81,24 @@ void writeToFile(const char *fileAddress, const Strings *strings, const char *op
     assert(file != nullptr);
 
     for (long int i = 0; i < strings->size; i++) {
-        writeToFile(file, strings->array[strings->composition[i]]);
+        writeToFile(file, strings->array[i]);
     }
     writeToFile(file, "\n");
 
     fclose(file);
 }
+
+void writeBytesToFile(char *buffer, long int size, const char *fileAddress, const char *openArgs) {
+    FILE *file = fopen(fileAddress, openArgs);
+    for (int i = 0; i < size; i++) {
+        if (buffer[i] != '\0') {
+            fprintf(file, "%c", buffer[i]);
+        } else {
+            fprintf(file, "%c", '\n');
+        }
+    }
+}
+
 
 void printStringArray(Strings *strings) {
     assert(strings != nullptr);
@@ -221,34 +227,34 @@ int compareFlipped(void *v1, void *v2) {
     return 0;
 }
 
-void quickSort(Strings *strings, int (*comparator)(void *v1, void *v2), long int first, long int last) {
+void quickSort(char **strings, int (*comparator)(void *v1, void *v2), long int first, long int last) {
     assert(strings != nullptr);
 
     if (first < last) {
         long int pivot = first;
-        long int l = first, r = last;
+        long int l = first, r = last - 1;
 
         while (l < r) {
-            while (comparator(strings->array[strings->composition[l]], strings->array[strings->composition[pivot]]) < 0 && l < last) {
+            while (comparator(strings[l], strings[pivot]) < 0 && l < last) {
                 l++;
             }
-            while (comparator(strings->array[strings->composition[r]], strings->array[strings->composition[pivot]]) > 0) {
+            while (comparator(strings[r], strings[pivot]) > 0) {
                 r--;
             }
 
             if (l < r) {
-                long int tmp = strings->composition[l];
-                strings->composition[l] = strings->composition[r];
-                strings->composition[r] = tmp;
+                char *tmp = strings[l];
+                strings[l] = strings[r];
+                strings[r] = tmp;
 
                 l++;
                 r--;
             }
         }
 
-        long int tmp = strings->composition[pivot];
-        strings->composition[pivot] = strings->composition[r];
-        strings->composition[r] = tmp;
+        char *tmp = strings[pivot];
+        strings[pivot] = strings[r];
+        strings[r] = tmp;
 
         quickSort(strings, comparator, first, r - 1);
         quickSort(strings, comparator, r + 1, last);
@@ -257,23 +263,22 @@ void quickSort(Strings *strings, int (*comparator)(void *v1, void *v2), long int
 
 void sortAsc(Strings *strings) {
     assert(strings != nullptr);
-    quickSort(strings, compareString, 0, strings->size);
+    quickSort(strings->array, compareString, 0, strings->size);
 }
 
 void sortReversed(Strings *strings) {
     assert(strings != nullptr);
-    quickSort(strings, compareFlipped, 0, strings->size);
+    quickSort(strings->array, compareFlipped, 0, strings->size);
 }
 
-void resetComposition(Strings *strings) {
-    assert(strings != nullptr);
-    for (long int i = 0; i < strings->size; i++) {
-        strings->composition[i] = i;
-    }
-}
+// void resetComposition(Strings *strings) {
+//     assert(strings != nullptr);
+//     for (long int i = 0; i < strings->size; i++) {
+//         strings->composition[i] = i;
+//     }
+// }
 
 void freeStrings(Strings *strings) {
     free(strings->array);
-    free(strings->composition);
     free(strings->buffer);
 }

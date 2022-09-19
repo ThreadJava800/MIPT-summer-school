@@ -27,8 +27,8 @@ const int MAX_STRING = 4096;
  */
 struct Strings {
     char **array = {};
-    long int *composition = {};
     char *buffer = {};
+    long int bufferSize = 0;
     long int size = 0;
 };
 
@@ -68,7 +68,7 @@ long int countLines(char *buffer, long int fileSize, char pivot = '\n');
  * @param pivot - symbol to chop lines to
  * @param fileSize - amount of bytes in buffer
  */
-void chopLines(char *buffer, char **strings, long int *composition, long int fileSize, char pivot = '\n');
+void chopLines(char *buffer, char **strings, long int fileSize, char pivot = '\n');
 
 /**
  * Transports lines from file to @Strings structure
@@ -94,6 +94,8 @@ void writeToFile(FILE *file, const char *string);
  * @param openArgs - argument to open
  */
 void writeToFile(const char *fileAddress, const Strings *strings, const char *openArgs = "a");
+
+void writeBytesToFile(char *buffer, long int size, const char *fileAddress, const char *openArgs = "a");
 
 /**
  * Just prints array of string
@@ -140,7 +142,7 @@ int compareFlipped(void *v1, void *v2);
  * @param first - left border
  * @param last - right border
  */
-void quickSort(Strings *strings, int (*comparator)(void *v1, void *v2), long int first, long int last);
+void quickSort(char **strings, int (*comparator)(void *v1, void *v2), long int first, long int last);
 
 /**
  * Sorts strings in alphabetic order from the beginning
